@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class ReadFile {
     private String fileName;
     private String filePath;
+    private ExifInfo exifInfo;
 }

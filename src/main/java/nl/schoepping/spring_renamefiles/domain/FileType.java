@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class FileType {
-    private String name;
+    private String fileType;
     private String extension;
     private String dateTime;
     private String timeZone;
@@ -18,4 +18,11 @@ public class FileType {
     private String gpsLongitude;
     private Boolean isWritable;
     private Boolean isPhotoFormat;
+
+    @Override
+    public String toString() {
+        return fileType;
+    }
+
 }
+
