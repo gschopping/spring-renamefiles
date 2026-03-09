@@ -30,7 +30,8 @@ public class TimeLine {
     private String comment;
     private String keys;
     private String instructions;
-    private Boolean override;
+    private Boolean overrideTitle;
+    private Boolean overrideLocation;
 
     public void setCountryCode(String countryCode) {
         Locale obj = new Locale("", countryCode);

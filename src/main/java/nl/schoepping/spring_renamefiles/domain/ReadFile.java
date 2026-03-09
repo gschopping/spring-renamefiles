@@ -13,4 +13,6 @@ public class ReadFile {
     private String fileName;
     private String filePath;
     private ExifInfo exifInfo;
+    private TimeLine timeLine;
+    private FileType fileType;
 }

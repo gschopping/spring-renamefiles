@@ -173,9 +173,13 @@ public class ReadTimeLine {
             value = (String) item.get("keys");
             timeline.setKeys(value);
         }
-        if (item.get("override") != null) {
-            boolValue = (Boolean) item.get("override");
-            timeline.setOverride(boolValue);
+        if (item.get("overridetitle") != null) {
+            boolValue = (Boolean) item.get("overridetitle");
+            timeline.setOverrideTitle(boolValue);
+        }
+        if (item.get("overridelocation") != null) {
+            boolValue = (Boolean) item.get("overridelocation");
+            timeline.setOverrideLocation(boolValue);
         }
         addTimeline(timeline);
     }

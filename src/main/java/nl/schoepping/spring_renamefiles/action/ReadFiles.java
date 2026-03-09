@@ -1,7 +1,7 @@
 package nl.schoepping.spring_renamefiles.action;
 
+import com.google.common.io.Files;
 import nl.schoepping.spring_renamefiles.domain.ReadFile;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +17,7 @@ public class ReadFiles {
 
     public List<ReadFile> getFiles() {
         ReadConfig config =  new ReadConfig();
+        ReadTimeLine timeLine = new ReadTimeLine();
         File dir = new File(this.path);
         File[] files = dir.listFiles();
         List<ReadFile> fileList = new ArrayList<>();
@@ -27,6 +28,8 @@ public class ReadFiles {
                         .fileName(file.getName())
                         .filePath(this.path)
                         .exifInfo(exifInfo.getExifInfo())
+                        .timeLine(timeLine.getTimeLine(exifInfo.getExifInfo().getCreationDate()))
+                        .fileType(config.getFileType(Files.getFileExtension(file.getName())))
                         .build()
                 );
             }
