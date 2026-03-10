@@ -24,9 +24,14 @@ public class ReadConfig {
     private String pathForResults = "results";
     @Getter
     private final ArrayList<FileType> fileTypes = new ArrayList<>();
+    public enum FileFormat {
+        PHOTO,
+        VIDEO,
+        ALL
+    }
 
     public ReadConfig() {
-        String configFile = "./config/config.yml";
+        String configFile = "../config/config.yml";
         int lineCount = 0;
         try {
             InputStream input = new FileInputStream(new File(configFile));
@@ -157,11 +162,13 @@ public class ReadConfig {
         return null;
     }
 
-    public String getRegexMedia(Boolean All) {
+    public String getRegexMedia(FileFormat fileFormat) {
         ArrayList<FileType> items = (ArrayList<FileType>) this.getFileTypes().clone();
-        if (!All) {
+        if (fileFormat == FileFormat.PHOTO) {
             // remove all but isPhotoFormat filetypes
             items.removeIf(item -> !item.getIsPhotoFormat());
+        } else if (fileFormat == FileFormat.VIDEO) {
+            items.removeIf(item -> item.getIsPhotoFormat());
         }
 
         StringBuilder result = new StringBuilder("^(");

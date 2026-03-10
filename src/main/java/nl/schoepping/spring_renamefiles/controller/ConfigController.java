@@ -28,8 +28,9 @@ public class ConfigController {
         paths.add(config.getPathForTimelaps());
         paths.add(config.getPathForGPS());
         paths.add(config.getPathForResults());
-        paths.add(config.getRegexMedia(true));
-        paths.add(config.getRegexMedia(false));
+        paths.add(config.getRegexMedia(ReadConfig.FileFormat.ALL));
+        paths.add(config.getRegexMedia(ReadConfig.FileFormat.PHOTO));
+        paths.add(config.getRegexMedia(ReadConfig.FileFormat.VIDEO));
         return paths;
     }
 }

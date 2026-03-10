@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ReadFile {
     private String fileName;
+    private String newFileName;
     private String filePath;
+    private String resultsPath;
     private ExifInfo exifInfo;
     private TimeLine timeLine;
     private FileType fileType;

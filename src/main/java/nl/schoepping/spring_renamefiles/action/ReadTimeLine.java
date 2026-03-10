@@ -29,7 +29,7 @@ public class ReadTimeLine {
     }
 
     public ReadTimeLine() {
-        String timeLineFile = "./config/timeline.yml";
+        String timeLineFile = "../config/timeline.yml";
         int lineCount = 0;
         try {
             InputStream input = new FileInputStream(new File(timeLineFile));
