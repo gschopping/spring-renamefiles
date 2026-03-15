@@ -1,6 +1,8 @@
 package nl.schoepping.spring_renamefiles.action;
 
 import lombok.Getter;
+import nl.schoepping.spring_renamefiles.domain.ConfigExif;
+import nl.schoepping.spring_renamefiles.domain.ConfigOpenStreetMap;
 import nl.schoepping.spring_renamefiles.domain.FileType;
 import org.yaml.snakeyaml.Yaml;
 
@@ -22,6 +24,10 @@ public class ReadConfig {
     private String pathForGPS = "^(GPS\\d+)$";
     @Getter
     private String pathForResults = "results";
+    @Getter
+    private ConfigExif configExif = new ConfigExif();
+    @Getter
+    private ConfigOpenStreetMap configOSM = new ConfigOpenStreetMap();
     @Getter
     private final ArrayList<FileType> fileTypes = new ArrayList<>();
     public enum FileFormat {
@@ -48,6 +54,98 @@ public class ReadConfig {
                 }
                 if (configSection.get("pathResults") != null) {
                     pathForResults = (String) configSection.get("pathResults");
+                }
+            }
+
+            if (config.get("exif") != null) {
+                Map exifSection = (Map) config.get("exif");
+                if (exifSection.get("author") != null) {
+                    String author = (String) exifSection.get("author");
+                    configExif.setAuthor(author.split(" "));
+                }
+                if (exifSection.get("copyright") != null) {
+                    String copyright = (String) exifSection.get("copyright");
+                    configExif.setCopyright(copyright.split(" "));
+                }
+                if (exifSection.get("comment") != null) {
+                    String comment = (String) exifSection.get("comment");
+                    configExif.setComment(comment.split(" "));
+                }
+                if (exifSection.get("countryCode2") != null) {
+                    String countryCode2 = (String) exifSection.get("countryCode2");
+                    configExif.setCountryCode2(countryCode2.split(" "));
+                }
+                if (exifSection.get("countryCode3") != null) {
+                    String countryCode3 = (String) exifSection.get("countryCode3");
+                    configExif.setCountryCode3(countryCode3.split(" "));
+                }
+                if (exifSection.get("country") != null) {
+                    String country = (String) exifSection.get("country");
+                    configExif.setCountry(country.split(" "));
+                }
+                if (exifSection.get("province") != null) {
+                    String province = (String) exifSection.get("province");
+                    configExif.setProvince(province.split(" "));
+                }
+                if (exifSection.get("city") != null) {
+                    String city = (String) exifSection.get("city");
+                    configExif.setCity(city.split( " "));
+                }
+                if (exifSection.get("location") != null) {
+                    String location = (String) exifSection.get("location");
+                    configExif.setLocation(location.split(" "));
+                }
+                if (exifSection.get("title") != null) {
+                    String title = (String) exifSection.get("title");
+                    configExif.setTitle(title.split(" "));
+                }
+                if (exifSection.get("url") != null) {
+                    String url = (String) exifSection.get("url");
+                    configExif.setUrl(url.split(" "));
+                }
+                if (exifSection.get("description") != null) {
+                    String description = (String) exifSection.get("description");
+                    configExif.setDescription(description.split(" "));
+                }
+                if (exifSection.get("keys1") != null) {
+                    String keys1 = (String) exifSection.get("keys1");
+                    configExif.setKeys1(keys1.split(" "));
+                }
+                if (exifSection.get("keys2") != null) {
+                    String keys2 = (String) exifSection.get("keys2");
+                    configExif.setKeys2(keys2.split(" "));
+                }
+                if (exifSection.get("instructions") != null) {
+                    String instructions = (String) exifSection.get("instructions");
+                    configExif.setInstructions(instructions.split(" "));
+                }
+            }
+
+            if (config.get("openStreetMap") != null) {
+                Map exifSection = (Map) config.get("openStreetMap");
+                if (exifSection.get("title") != null) {
+                    String title = (String) exifSection.get("title");
+                    configOSM.setTitle(title.split(" "));
+                }
+                if (exifSection.get("location") != null) {
+                    String location = (String) exifSection.get("location");
+                    configOSM.setLocation(location.split(" "));
+                }
+                if (exifSection.get("city") != null) {
+                    String city = (String) exifSection.get("city");
+                    configOSM.setCity(city.split(" "));
+                }
+                if (exifSection.get("province") != null) {
+                    String province = (String) exifSection.get("province");
+                    configOSM.setProvince(province.split(" "));
+                }
+                if (exifSection.get("country") != null) {
+                    String country = (String) exifSection.get("country");
+                    configOSM.setCountry(country.split(" "));
+                }
+                if (exifSection.get("countryCode") != null) {
+                    String countryCode = (String) exifSection.get("countryCode");
+                    configOSM.setCountryCode(countryCode.split(" "));
                 }
             }
 

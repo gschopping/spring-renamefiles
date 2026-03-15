@@ -3,6 +3,8 @@ package nl.schoepping.spring_renamefiles.controller;
 
 import lombok.extern.java.Log;
 import nl.schoepping.spring_renamefiles.action.ReadConfig;
+import nl.schoepping.spring_renamefiles.domain.ConfigExif;
+import nl.schoepping.spring_renamefiles.domain.ConfigOpenStreetMap;
 import nl.schoepping.spring_renamefiles.domain.FileType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,5 +34,17 @@ public class ConfigController {
         paths.add(config.getRegexMedia(ReadConfig.FileFormat.PHOTO));
         paths.add(config.getRegexMedia(ReadConfig.FileFormat.VIDEO));
         return paths;
+    }
+
+    @GetMapping(path = "config/exif")
+    public ConfigExif configExif() {
+        ReadConfig config = new ReadConfig();
+        return config.getConfigExif();
+    }
+
+    @GetMapping(path = "config/osm")
+    public ConfigOpenStreetMap configOSM() {
+        ReadConfig config = new ReadConfig();
+        return config.getConfigOSM();
     }
 }
