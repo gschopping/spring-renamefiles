@@ -17,6 +17,7 @@ public class ExifInfo {
     private String creationTimeString;
     private Double latitude;
     private Double longitude;
+    private String fileType;
 
     public String getCreationDateString() {
         String dateFormat = "yyyyMMdd";

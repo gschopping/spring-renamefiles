@@ -17,4 +17,5 @@ public class ReadFile {
     private ExifInfo exifInfo;
     private TimeLine timeLine;
     private FileType fileType;
+    private OSMLocation location;
 }

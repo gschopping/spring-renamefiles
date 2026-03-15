@@ -88,6 +88,7 @@ public class ReadExifInfo {
         String dateString = null;
         String timeZone = "+00:00";
         String filetype = map.get("FileType");
+        result.setFileType(filetype);
 //        ReadConfigYaml.FileType fileType = configYaml.getFileType(map.get("FileType"));
         FileType fileType = this.config.getFileType(filetype);
         dateString = map.get(fileType.getDateTime());

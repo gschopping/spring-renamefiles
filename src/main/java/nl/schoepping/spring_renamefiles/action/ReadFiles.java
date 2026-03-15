@@ -28,6 +28,7 @@ public class ReadFiles {
         ReadTimeLine timeLines = new ReadTimeLine();
         File dir = new File(this.path);
         File[] files = dir.listFiles();
+        ReadAddress address = new ReadAddress();
         List<ReadFile> fileList = new ArrayList<>();
         int counter = 1;
         for (File file : files) {
@@ -50,16 +51,31 @@ public class ReadFiles {
                             Files.getFileExtension(file.getName())
                     );
                 }
-                fileList.add(ReadFile.builder()
-                        .fileName(file.getName())
-                        .newFileName(newFileName)
-                        .filePath(this.path)
-                        .resultsPath(this.path + "/" + config.getPathForResults())
-                        .exifInfo(exifInfo.getExifInfo())
-                        .timeLine(timeLine)
-                        .fileType(config.getFileType(Files.getFileExtension(file.getName())))
-                        .build()
-                );
+                if (exifInfo.getExifInfo().getLatitude() != null && exifInfo.getExifInfo().getLongitude() != null) {
+                    fileList.add(ReadFile.builder()
+                            .fileName(file.getName())
+                            .newFileName(newFileName)
+                            .filePath(this.path)
+                            .resultsPath(this.path + "/" + config.getPathForResults())
+                            .exifInfo(exifInfo.getExifInfo())
+                            .timeLine(timeLine)
+                            .fileType(config.getFileType(exifInfo.getExifInfo().getFileType()))
+                            .location(address.getLocation(exifInfo.getExifInfo()))
+                            .build()
+                    );
+                }
+                else {
+                    fileList.add(ReadFile.builder()
+                            .fileName(file.getName())
+                            .newFileName(newFileName)
+                            .filePath(this.path)
+                            .resultsPath(this.path + "/" + config.getPathForResults())
+                            .exifInfo(exifInfo.getExifInfo())
+                            .timeLine(timeLine)
+                            .fileType(config.getFileType(exifInfo.getExifInfo().getFileType()))
+                            .build()
+                    );
+                }
                 counter++;
             }
         }
