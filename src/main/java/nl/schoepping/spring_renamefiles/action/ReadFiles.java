@@ -1,6 +1,7 @@
 package nl.schoepping.spring_renamefiles.action;
 
 import com.google.common.io.Files;
+import nl.schoepping.spring_renamefiles.domain.Address;
 import nl.schoepping.spring_renamefiles.domain.ReadFile;
 import nl.schoepping.spring_renamefiles.domain.TimeLine;
 
@@ -36,18 +37,51 @@ public class ReadFiles {
                 ReadExifInfo exifInfo = new ReadExifInfo(file.getPath(), config);
                 TimeLine timeLine = timeLines.getTimeLine(exifInfo.getExifInfo().getCreationDate());
                 String newFileName = "";
+                String title = "";
+                Address location = new Address();
+                if (exifInfo.getExifInfo().getLatitude() != null && exifInfo.getExifInfo().getLongitude() != null) {
+                    MapOpenStreetMap mapOSM = new MapOpenStreetMap(config, address.getLocation(exifInfo.getExifInfo()));
+                    if (timeLine.getOverrideTitle()) {
+                        title = timeLine.getTitle();
+                    }
+                    else {
+                        title = mapOSM.getAddress().getTitle();
+                    }
+                    if (timeLine.getOverrideLocation()) {
+                        location.setTitle(timeLine.getTitle());
+                        location.setDescription(timeLine.getDescription());
+                        location.setLocation(timeLine.getLocation());
+                        location.setCity(timeLine.getCity());
+                        location.setProvince(timeLine.getProvince());
+                        location.setCountry(timeLine.getCountry());
+                        location.setCountrycode(timeLine.getCountryCode());
+                    }
+                    else {
+                        location = mapOSM.getAddress();
+                    }
+                }
+                else {
+                    title = timeLine.getTitle();
+                    location.setTitle(timeLine.getTitle());
+                    location.setDescription(timeLine.getDescription());
+                    location.setLocation(timeLine.getLocation());
+                    location.setCity(timeLine.getCity());
+                    location.setProvince(timeLine.getProvince());
+                    location.setCountry(timeLine.getCountry());
+                    location.setCountrycode(timeLine.getCountryCode());
+                }
                 if (divider == Divider.TIME) {
                     newFileName = String.format("%s-%s %s.%s",
                             exifInfo.getExifInfo().getCreationDateString(),
                             exifInfo.getExifInfo().getCreationTimeString(),
-                            timeLine.getTitle(),
+                            title,
                             Files.getFileExtension(file.getName())
                             );
                 } else if (divider == Divider.COUNTER) {
                     newFileName = String.format("%s-%04d %s.%s",
                             exifInfo.getExifInfo().getCreationDateString(),
                             counter,
-                            timeLine.getTitle(),
+                            title,
                             Files.getFileExtension(file.getName())
                     );
                 }
@@ -61,6 +95,7 @@ public class ReadFiles {
                             .timeLine(timeLine)
                             .fileType(config.getFileType(exifInfo.getExifInfo().getFileType()))
                             .location(address.getLocation(exifInfo.getExifInfo()))
+                            .address(location)
                             .build()
                     );
                 }
@@ -73,6 +108,7 @@ public class ReadFiles {
                             .exifInfo(exifInfo.getExifInfo())
                             .timeLine(timeLine)
                             .fileType(config.getFileType(exifInfo.getExifInfo().getFileType()))
+                            .address(location)
                             .build()
                     );
                 }

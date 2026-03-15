@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ConfigExif {
 
-    private String[] author;
+    private String[] author = {"EXIF:Artist", "EXIF:XPAuthor", "XMP:Creator", "XMP:CaptionWriter", "IPTC:By-line", "IPTC:Writer-Editor"};
     private String[] copyright;
     private String[] comment;
     private String[] countryCode2;

@@ -18,4 +18,5 @@ public class ReadFile {
     private TimeLine timeLine;
     private FileType fileType;
     private OSMLocation location;
+    private Address address;
 }

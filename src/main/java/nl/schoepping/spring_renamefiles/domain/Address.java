@@ -1,65 +1,63 @@
 package nl.schoepping.spring_renamefiles.domain;
 
-import lombok.Getter;
+import lombok.*;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Address {
-    @Getter
+    @Setter(AccessLevel.NONE)
     private Boolean isSet = false;
-    @Getter
+    @Setter(AccessLevel.NONE)
     private String countryCode;
-    @Getter
+    @Setter(AccessLevel.NONE)
     private String country;
-    @Getter
+    @Setter(AccessLevel.NONE)
     private String province;
-    @Getter
+    @Setter(AccessLevel.NONE)
     private String city;
-    @Getter
+    @Setter(AccessLevel.NONE)
     private String location;
-    @Getter
-    private String postcode ;
-    @Getter
-    private String street;
-    @Getter
-    private String address;
+    @Setter(AccessLevel.NONE)
+    private String title ;
+    @Setter(AccessLevel.NONE)
+    private String description ;
 
-    void setCountrycode(String countryCode) {
+    public void setCountrycode(String countryCode) {
         this.isSet = true;
         this.countryCode = countryCode.toUpperCase();
     }
 
-    void setCountry(String country) {
+    public void setCountry(String country) {
         this.isSet = true;
         this.country = country;
     }
 
-    void setProvince(String province) {
+    public void setProvince(String province) {
         this.isSet = true;
         this.province = province;
     }
 
-    void setCity(String city) {
+    public void setCity(String city) {
         this.isSet = true;
         this.city = city;
     }
 
-    void setLocation(String location) {
+    public void setLocation(String location) {
         this.isSet = true;
         this.location = location;
     }
 
-    void setPostcode(String postcode) {
+    public void setTitle(String title) {
         this.isSet = true;
-        this.postcode = postcode;
+        this.title = title;
     }
 
-    void setStreet(String street) {
+    public void setDescription(String description) {
         this.isSet = true;
-        this.street = street;
+        this.description = description;
     }
 
-    void setAddress(String address) {
-        this.isSet = true;
-        this.address = address;
-    }
 
 }

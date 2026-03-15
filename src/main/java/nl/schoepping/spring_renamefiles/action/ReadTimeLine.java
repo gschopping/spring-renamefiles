@@ -173,12 +173,12 @@ public class ReadTimeLine {
             value = (String) item.get("keys");
             timeline.setKeys(value);
         }
-        if (item.get("overridetitle") != null) {
-            boolValue = (Boolean) item.get("overridetitle");
+        if (item.get("overrideTitle") != null) {
+            boolValue = (Boolean) item.get("overrideTitle");
             timeline.setOverrideTitle(boolValue);
         }
-        if (item.get("overridelocation") != null) {
-            boolValue = (Boolean) item.get("overridelocation");
+        if (item.get("overrideLocation") != null) {
+            boolValue = (Boolean) item.get("overrideLocation");
             timeline.setOverrideLocation(boolValue);
         }
         addTimeline(timeline);
