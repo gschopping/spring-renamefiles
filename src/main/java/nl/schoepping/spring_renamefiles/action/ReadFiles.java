@@ -1,6 +1,7 @@
 package nl.schoepping.spring_renamefiles.action;
 
 import com.google.common.io.Files;
+import lombok.Getter;
 import nl.schoepping.spring_renamefiles.domain.Address;
 import nl.schoepping.spring_renamefiles.domain.ReadFile;
 import nl.schoepping.spring_renamefiles.domain.TimeLine;
@@ -17,20 +18,22 @@ public class ReadFiles {
         TIME
     }
     private Divider divider;
+    @Getter
+    private List<ReadFile> files = new ArrayList<>();
 
     public ReadFiles(String path, String regexMedia, Divider divider) {
         this.path = path;
         this.regexMedia = regexMedia;
         this.divider = divider;
+        setFiles();
     }
 
-    public List<ReadFile> getFiles() {
+    private void  setFiles() {
         ReadConfig config =  new ReadConfig();
         ReadTimeLine timeLines = new ReadTimeLine();
         File dir = new File(this.path);
         File[] files = dir.listFiles();
         ReadAddress address = new ReadAddress();
-        List<ReadFile> fileList = new ArrayList<>();
         int counter = 1;
         for (File file : files) {
             if (file.isFile() && file.getName().toUpperCase().matches(this.regexMedia)) {
@@ -54,7 +57,7 @@ public class ReadFiles {
                         location.setCity(timeLine.getCity());
                         location.setProvince(timeLine.getProvince());
                         location.setCountry(timeLine.getCountry());
-                        location.setCountrycode(timeLine.getCountryCode());
+                        location.setCountryCode(timeLine.getCountryCode());
                     }
                     else {
                         location = mapOSM.getAddress();
@@ -68,7 +71,7 @@ public class ReadFiles {
                     location.setCity(timeLine.getCity());
                     location.setProvince(timeLine.getProvince());
                     location.setCountry(timeLine.getCountry());
-                    location.setCountrycode(timeLine.getCountryCode());
+                    location.setCountryCode(timeLine.getCountryCode());
                 }
                 if (divider == Divider.TIME) {
                     newFileName = String.format("%s-%s %s.%s",
@@ -86,7 +89,7 @@ public class ReadFiles {
                     );
                 }
                 if (exifInfo.getExifInfo().getLatitude() != null && exifInfo.getExifInfo().getLongitude() != null) {
-                    fileList.add(ReadFile.builder()
+                    this.files.add(ReadFile.builder()
                             .fileName(file.getName())
                             .newFileName(newFileName)
                             .filePath(this.path)
@@ -100,7 +103,7 @@ public class ReadFiles {
                     );
                 }
                 else {
-                    fileList.add(ReadFile.builder()
+                    this.files.add(ReadFile.builder()
                             .fileName(file.getName())
                             .newFileName(newFileName)
                             .filePath(this.path)
@@ -115,6 +118,51 @@ public class ReadFiles {
                 counter++;
             }
         }
-        return fileList;
     }
+
+    private ReadFile getNearestGPSFile(ReadFile readFile) {
+        int index = this.files.indexOf(readFile);
+        index++;
+        boolean found = false;
+        while (index < this.files.size() - 1 && !found) {
+            if (this.files.get(index).getExifInfo().getLongitude() != null) {
+                found = true;
+            }
+            else {
+                index++;
+            }
+        }
+        if (found) {
+            return this.files.get(index);
+        }
+        else {
+            return null;
+        }
+    }
+
+    private void updateFileWithGpsInfo(ReadFile currentFile, ReadFile nearestFile) {
+        if (nearestFile != null) {
+            currentFile.setLocation(nearestFile.getLocation());
+            currentFile.setAddress(nearestFile.getAddress());
+            currentFile.getExifInfo().setLongitude(nearestFile.getExifInfo().getLongitude());
+            currentFile.getExifInfo().setLatitude(nearestFile.getExifInfo().getLatitude());
+            String title = nearestFile.getAddress().getTitle();
+            String newFileName = String.format("%s-%s %s.%s",
+                    currentFile.getExifInfo().getCreationDateString(),
+                    currentFile.getExifInfo().getCreationTimeString(),
+                    title,
+                    Files.getFileExtension(currentFile.getFileName())
+            );
+            currentFile.setNewFileName(newFileName);
+        }
+    }
+
+    public void updateFiles() {
+        for (ReadFile readFile : this.files) {
+            if (readFile.getExifInfo().getLongitude() == null) {
+                updateFileWithGpsInfo(readFile, getNearestGPSFile(readFile));
+            }
+        }
+    }
+
 }

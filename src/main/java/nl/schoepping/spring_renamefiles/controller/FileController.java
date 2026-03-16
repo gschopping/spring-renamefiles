@@ -28,6 +28,7 @@ public class FileController {
         if (subfolder.matches(config.getPathForGPS())) {
             // GPS files, has the same geo location
             ReadFiles readFiles = new ReadFiles("../files/" + subfolder, config.getRegexMedia(ReadConfig.FileFormat.ALL), ReadFiles.Divider.TIME);
+            readFiles.updateFiles();
             return readFiles.getFiles();
         } else if (subfolder.matches(config.getPathForTimelaps())) {
             // Timelaps folder only contain photos, and should be numbered.

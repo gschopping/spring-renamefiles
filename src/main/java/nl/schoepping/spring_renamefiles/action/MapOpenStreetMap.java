@@ -18,7 +18,7 @@ public class MapOpenStreetMap {
         this.address.setCity(getMap(config.getConfigOSM().getCity()));
         this.address.setProvince(getMap(config.getConfigOSM().getProvince()));
         this.address.setCountry(getMap(config.getConfigOSM().getCountry()));
-        this.address.setCountrycode(getMap(config.getConfigOSM().getCountryCode()));
+        this.address.setCountryCode(getMap(config.getConfigOSM().getCountryCode()));
     }
 
     private String getMap(String[] keys) {
