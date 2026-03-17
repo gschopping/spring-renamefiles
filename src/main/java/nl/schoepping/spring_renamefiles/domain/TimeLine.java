@@ -36,7 +36,7 @@ public class TimeLine {
     public void setCountryCode(String countryCode) {
         Locale obj = new Locale("", countryCode);
         try {
-            this.countryCode = obj.getISO3Country();
+            this.countryCode = countryCode;
             this.country = obj.getDisplayCountry();
         }
         catch (Exception e) {

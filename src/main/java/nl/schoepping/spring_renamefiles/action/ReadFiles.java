@@ -74,16 +74,18 @@ public class ReadFiles {
                     location.setCountryCode(timeLine.getCountryCode());
                 }
                 if (divider == Divider.TIME) {
-                    newFileName = String.format("%s-%s %s.%s",
+                    newFileName = String.format("%s-%s%s %s.%s",
                             exifInfo.getExifInfo().getCreationDateString(),
                             exifInfo.getExifInfo().getCreationTimeString(),
+                            "%s",
                             title,
                             Files.getFileExtension(file.getName())
                             );
                 } else if (divider == Divider.COUNTER) {
-                    newFileName = String.format("%s-%04d %s.%s",
+                    newFileName = String.format("%s-%04d%s %s.%s",
                             exifInfo.getExifInfo().getCreationDateString(),
                             counter,
+                            "%s",
                             title,
                             Files.getFileExtension(file.getName())
                     );
