@@ -3,6 +3,7 @@ package nl.schoepping.spring_renamefiles.controller;
 import lombok.extern.java.Log;
 import nl.schoepping.spring_renamefiles.action.ReadConfig;
 import nl.schoepping.spring_renamefiles.action.ReadFiles;
+import nl.schoepping.spring_renamefiles.action.WriteExifInfo;
 import nl.schoepping.spring_renamefiles.domain.ReadFile;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,20 @@ public class FileController {
             return readFiles.getFiles();
         }
         else  return Collections.emptyList();
+    }
+
+    @GetMapping(path = "/file/{filename}")
+    public WriteExifInfo getFile(@PathVariable String filename) {
+        ReadConfig config = new ReadConfig();
+        ReadFiles readFiles = new ReadFiles("../files", config.getRegexMedia(ReadConfig.FileFormat.ALL), ReadFiles.Divider.TIME);
+        ReadFile readFile;
+        readFile = readFiles.getReadFile(filename);
+        if (readFile != null) {
+            return new WriteExifInfo(readFile, config.getConfigExif(), true);
+        }
+        else {
+            return null;
+        }
     }
 
 }

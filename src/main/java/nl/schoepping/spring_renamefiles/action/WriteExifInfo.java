@@ -1,5 +1,6 @@
 package nl.schoepping.spring_renamefiles.action;
 
+import lombok.Getter;
 import lombok.extern.java.Log;
 import nl.schoepping.spring_renamefiles.domain.ConfigExif;
 import nl.schoepping.spring_renamefiles.domain.ReadFile;
@@ -18,6 +19,7 @@ public class WriteExifInfo {
 
     private final String exiftool;
     private final String tempFile;
+    @Getter
     private final List<String> arguments = new ArrayList<>();
     private final ReadFile readFile;
     private final ConfigExif config;
@@ -36,8 +38,10 @@ public class WriteExifInfo {
         setCopyright(readFile.getTimeLine().getCopyRight());
         setUrl(readFile.getTimeLine().getWebsite());
         setComment(readFile.getTimeLine().getComment());
-        setKeys1(readFile.getTimeLine().getKeys().split(","));
-        setKeys2(readFile.getTimeLine().getKeys().split(","));
+        if (readFile.getTimeLine().getKeys() != null) {
+            setKeys1(readFile.getTimeLine().getKeys().split(","));
+            setKeys2(readFile.getTimeLine().getKeys().split(","));
+        }
         setInstructions(readFile.getTimeLine().getInstructions());
         setCountryCode2(readFile.getAddress().getCountryCode());
         setCountryCode3(readFile.getAddress().getCountryCode());
@@ -47,34 +51,40 @@ public class WriteExifInfo {
         setLocation(readFile.getAddress().getLocation());
         setTitle(readFile.getAddress().getTitle());
         setDescription(readFile.getAddress().getDescription());
-        boolean noError = false;
-        char postfix = ' ';
-        String newFileName;
-        while (! noError) {
-            if (postfix == ' ') {
-                newFileName = String.format(readFile.getNewFileName(), "");
-            }
-            else {
-                newFileName = String.format(readFile.getNewFileName(), postfix);
-            }
-            try {
-                writeFile(readFile.getResultsPath() + "/" + newFileName, false);
-                noError = true;
-            }
-            catch  (Exception e) {
-                if (e.getMessage().matches("^(.* already exists)$")) {
-                    if (postfix == ' ') {
-                        postfix = 'a';
+    }
+
+    public void writeExifInfoToFile() {
+        try {
+            writeArguments();
+            boolean noError = false;
+            char postfix = ' ';
+            String newFileName;
+            while (! noError) {
+                if (postfix == ' ') {
+                    newFileName = String.format(readFile.getNewFileName(), "");
+                } else {
+                    newFileName = String.format(readFile.getNewFileName(), postfix);
+                }
+                try {
+                    writeFile(readFile.getResultsPath() + "/" + newFileName, false);
+                    noError = true;
+                    log.info("Rename file " + readFile.getFileName() + " to " + newFileName);
+                } catch (Exception e) {
+                    if (e.getMessage().matches("^(.* already exists)$")) {
+                        if (postfix == ' ') {
+                            postfix = 'a';
+                        } else {
+                            postfix += 1;
+                        }
                     } else {
-                        postfix += 1;
+                        log.log(Level.SEVERE, "Error while writing exif to " + readFile.getNewFileName(), e);
+                        noError = true;
                     }
                 }
-                else {
-                    log.log(Level.SEVERE, "Error while writing exif to " + readFile.getNewFileName(), e);
-                    noError = true;
-                }
             }
-
+        }
+        catch (Exception e) {
+            log.log(Level.SEVERE, "Error while writing arguments to " + tempFile, e);
         }
     }
 

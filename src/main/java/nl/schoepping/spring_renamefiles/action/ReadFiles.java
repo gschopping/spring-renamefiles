@@ -2,6 +2,7 @@ package nl.schoepping.spring_renamefiles.action;
 
 import com.google.common.io.Files;
 import lombok.Getter;
+import lombok.extern.java.Log;
 import nl.schoepping.spring_renamefiles.domain.Address;
 import nl.schoepping.spring_renamefiles.domain.ReadFile;
 import nl.schoepping.spring_renamefiles.domain.TimeLine;
@@ -9,7 +10,9 @@ import nl.schoepping.spring_renamefiles.domain.TimeLine;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+@Log
 public class ReadFiles {
     private String path;
     private String regexMedia;
@@ -37,6 +40,7 @@ public class ReadFiles {
         int counter = 1;
         for (File file : files) {
             if (file.isFile() && file.getName().toUpperCase().matches(this.regexMedia)) {
+                log.info("Reading file " + file.getName());
                 ReadExifInfo exifInfo = new ReadExifInfo(file.getPath(), config);
                 TimeLine timeLine = timeLines.getTimeLine(exifInfo.getExifInfo().getCreationDate());
                 String newFileName = "";
@@ -165,6 +169,20 @@ public class ReadFiles {
                 updateFileWithGpsInfo(readFile, getNearestGPSFile(readFile));
             }
         }
+    }
+
+    public ReadFile getReadFile(String filename) {
+        int index = 0;
+        boolean found = false;
+        ReadFile readFile = null;
+        while (index < this.files.size() - 1 && !found) {
+            if (Objects.equals(this.files.get(index).getFileName(), filename)) {
+                readFile = this.files.get(index);
+                found = true;
+            }
+            index++;
+        }
+        return readFile;
     }
 
 }

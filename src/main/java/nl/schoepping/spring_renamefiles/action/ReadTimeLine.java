@@ -1,8 +1,10 @@
 package nl.schoepping.spring_renamefiles.action;
 
+import lombok.extern.java.Log;
 import nl.schoepping.spring_renamefiles.domain.TimeLine;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.internal.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,9 +14,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Log
 public class ReadTimeLine {
 
     private Boolean Enabled = true;
@@ -62,6 +66,7 @@ public class ReadTimeLine {
                     setTimeLine(timelineItem);
                 }
             }
+            log.info("Reading " + lineCount + " timelines");
         }
         catch (Exception e) {
             String errorType = e.getClass().getName();
@@ -77,10 +82,12 @@ public class ReadTimeLine {
                     column = Integer.parseInt(matcher.group(2));
                     sentence = matcher.group(4);
                 }
-                throw new IllegalStateException(String.format("Error on line %d, column %d: %s", line, column, sentence));
+                log.log(Level.SEVERE, String.format("Error on line %d, column %d: %s", line, column, sentence));
+//                throw new IllegalStateException(String.format("Error on line %d, column %d: %s", line, column, sentence));
             }
             else if (errorType.equals("java.io.FileNotFoundException")) {
-                throw new IllegalStateException(String.format("%s not found",timeLineFile));
+                log.log(Level.SEVERE, String.format("%s not found",timeLineFile));
+//                throw new IllegalStateException(String.format("%s not found",timeLineFile));
             }
             else if (errorType.equals("java.text.ParseException")) {
                 String regexDateParser = "^Unparseable date: \"(.+)\"$";
@@ -90,10 +97,12 @@ public class ReadTimeLine {
                 if (matcher.find()) {
                     sentence = matcher.group(1);
                 }
-                throw new IllegalStateException(String.format("Error in timeline %d, incorrect dateformat: %s", lineCount, sentence));
+                log.log(Level.SEVERE, String.format("Error in timeline %d, incorrect dateformat: %s", lineCount, sentence));
+//                throw new IllegalStateException(String.format("Error in timeline %d, incorrect dateformat: %s", lineCount, sentence));
             }
             else if (errorType.equals("java.lang.Exception")) {
-                throw new IllegalStateException(String.format("Error in timeline %d, %s", lineCount, e.getMessage()));
+                log.log(Level.SEVERE, String.format("Error in timeline %d, %s", lineCount, e.getMessage()));
+//                throw new IllegalStateException(String.format("Error in timeline %d, %s", lineCount, e.getMessage()));
             }
             else if (errorType.contains("org.yaml.snakeyaml")) {
                 Pattern pattern = Pattern.compile(regexParser, Pattern.MULTILINE);
@@ -106,10 +115,12 @@ public class ReadTimeLine {
                     column = Integer.parseInt(matcher.group(2));
                     sentence = matcher.group(4);
                 }
-                throw new IllegalStateException(String.format("Error on line %d, column %d: undefined alias %s", line, column, sentence));
+                log.log(Level.SEVERE, String.format("Error on line %d, column %d: undefined alias %s", line, column, sentence));
+//                throw new IllegalStateException(String.format("Error on line %d, column %d: undefined alias %s", line, column, sentence));
             }
             else {
-                throw new IllegalStateException(String.format("Error in timeline %d: %s", lineCount, e.getMessage()));
+                log.log(Level.SEVERE, String.format("Error in timeline %d, %s", lineCount, e.getMessage()));
+//                throw new IllegalStateException(String.format("Error in timeline %d: %s", lineCount, e.getMessage()));
             }
         }
     }
