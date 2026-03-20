@@ -33,7 +33,7 @@ public class ReadFiles {
 
     private void  setFiles() {
         ReadConfig config =  new ReadConfig();
-        ReadTimeLine timeLines = new ReadTimeLine();
+        ReadTimeLine timeLines = new ReadTimeLine("timeline.yml");
         File dir = new File(this.path);
         File[] files = dir.listFiles();
         ReadAddress address = new ReadAddress();

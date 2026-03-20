@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -32,8 +33,8 @@ public class ReadTimeLine {
         }
     }
 
-    public ReadTimeLine() {
-        String timeLineFile = "../config/timeline.yml";
+    public ReadTimeLine(String filename) {
+        String timeLineFile = "../config/" +  filename;
         int lineCount = 0;
         try {
             InputStream input = new FileInputStream(new File(timeLineFile));
@@ -229,6 +230,10 @@ public class ReadTimeLine {
                 result = timeline;
                 break;
             }
+        }
+        if (result == null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            throw new IllegalStateException(String.format("%s is outside range timelines", date.format(formatter)));
         }
         return result;
     }

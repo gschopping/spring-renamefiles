@@ -17,14 +17,14 @@ public class TimeLineController {
 
     @GetMapping(path = "/timeline")
     public List<TimeLine> getTimeLines() {
-        ReadTimeLine reader = new ReadTimeLine();
+        ReadTimeLine reader = new ReadTimeLine("timeline.yml");
         return reader.getTimeLines();
     }
 
     @GetMapping(path = "/timeline/{datetime}")
     public TimeLine getTimeLine(@PathVariable("datetime") String datetime) {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-        ReadTimeLine reader = new ReadTimeLine();
+        ReadTimeLine reader = new ReadTimeLine("timeline.yml");
         LocalDateTime date = LocalDateTime.parse(datetime, formatter);
         return reader.getTimeLine(date);
     }

@@ -8,11 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @CucumberContextConfiguration
-@SpringBootTest
+@SpringBootTest(classes = ApplicationTest.class)
 public class CucumberApplicationTest {
-
-	@Test
-	void contextLoads() {
-	}
 
 }
