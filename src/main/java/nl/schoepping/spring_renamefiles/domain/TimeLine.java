@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.Objects;
 
 @Data
 @AllArgsConstructor
@@ -34,10 +35,11 @@ public class TimeLine {
     private Boolean overrideLocation;
 
     public void setCountryCode(String countryCode) {
-        Locale obj = new Locale("", countryCode);
+        Locale locale = new Locale.Builder().setRegion(countryCode).build();
         try {
+            String ISO3 = locale.getISO3Country();
             this.countryCode = countryCode;
-            this.country = obj.getDisplayCountry();
+            this.country = locale.getDisplayCountry();
         }
         catch (Exception e) {
             throw new IllegalStateException(String.format("countrycode: %s is not valid", countryCode));

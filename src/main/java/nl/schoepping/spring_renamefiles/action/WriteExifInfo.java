@@ -128,7 +128,7 @@ public class WriteExifInfo {
 
     private void setCountryCode3(String countryCode) {
         if (countryCode != null) {
-            Locale locale = new Locale("", countryCode);
+            Locale locale = new Locale.Builder().setRegion(countryCode).build();
             setTag(this.config.getCountryCode3(), locale.getISO3Country());
         }
     }

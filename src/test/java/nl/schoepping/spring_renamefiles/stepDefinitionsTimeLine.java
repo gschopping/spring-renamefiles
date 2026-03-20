@@ -1,6 +1,5 @@
 package nl.schoepping.spring_renamefiles;
 
-import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -12,7 +11,7 @@ import org.junit.Assert;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class stepDefinitions {
+public class stepDefinitionsTimeLine {
 
     private ReadTimeLine readTimeLine = null;
     private TimeLine timeLine = null;
@@ -21,7 +20,12 @@ public class stepDefinitions {
     @Given("timeline file {string}")
     public void timelineFile(String filename) {
         // Write code here that turns the phrase above into concrete actions
-        readTimeLine = new ReadTimeLine(filename);
+        try {
+            readTimeLine = new ReadTimeLine(filename);
+        }
+        catch (Exception e) {
+            errorMessage = e.getMessage();
+        }
     }
 
     @Then("number of timelines should be {int}")
@@ -85,5 +89,11 @@ public class stepDefinitions {
     public void anErrorShouldBeShown(String message) {
         // Write code here that turns the phrase above into concrete actions
         Assert.assertEquals(message, errorMessage);
+    }
+
+    @Then("variable enabled should be set to false")
+    public void variable_enabled_should_be_set_to_false() {
+        // Write code here that turns the phrase above into concrete actions
+        Assert.assertEquals(Boolean.FALSE, readTimeLine.getEnabled());
     }
 }

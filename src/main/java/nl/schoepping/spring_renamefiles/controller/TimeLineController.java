@@ -17,8 +17,13 @@ public class TimeLineController {
 
     @GetMapping(path = "/timeline")
     public List<TimeLine> getTimeLines() {
-        ReadTimeLine reader = new ReadTimeLine("timeline.yml");
-        return reader.getTimeLines();
+        try {
+            ReadTimeLine reader = new ReadTimeLine("timeline.yml");
+            return reader.getTimeLines();
+        }
+        catch (Exception e) {
+            return null;
+        }
     }
 
     @GetMapping(path = "/timeline/{datetime}")

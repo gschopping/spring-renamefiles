@@ -1,5 +1,6 @@
 package nl.schoepping.spring_renamefiles.action;
 
+import lombok.Getter;
 import lombok.extern.java.Log;
 import nl.schoepping.spring_renamefiles.domain.TimeLine;
 import org.yaml.snakeyaml.LoaderOptions;
@@ -22,6 +23,7 @@ import java.util.regex.Pattern;
 @Log
 public class ReadTimeLine {
 
+    @Getter
     private Boolean Enabled = true;
     private Boolean AvoidNonAscii = true;
     private final List<TimeLine> timeLines = new ArrayList<>();
@@ -84,11 +86,11 @@ public class ReadTimeLine {
                     sentence = matcher.group(4);
                 }
                 log.log(Level.SEVERE, String.format("Error on line %d, column %d: %s", line, column, sentence));
-//                throw new IllegalStateException(String.format("Error on line %d, column %d: %s", line, column, sentence));
+                throw new IllegalStateException(String.format("Error on line %d, column %d: %s", line, column, sentence));
             }
             else if (errorType.equals("java.io.FileNotFoundException")) {
                 log.log(Level.SEVERE, String.format("%s not found",timeLineFile));
-//                throw new IllegalStateException(String.format("%s not found",timeLineFile));
+                throw new IllegalStateException(String.format("%s not found",timeLineFile));
             }
             else if (errorType.equals("java.text.ParseException")) {
                 String regexDateParser = "^Unparseable date: \"(.+)\"$";
@@ -99,11 +101,11 @@ public class ReadTimeLine {
                     sentence = matcher.group(1);
                 }
                 log.log(Level.SEVERE, String.format("Error in timeline %d, incorrect dateformat: %s", lineCount, sentence));
-//                throw new IllegalStateException(String.format("Error in timeline %d, incorrect dateformat: %s", lineCount, sentence));
+                throw new IllegalStateException(String.format("Error in timeline %d, incorrect dateformat: %s", lineCount, sentence));
             }
             else if (errorType.equals("java.lang.Exception")) {
                 log.log(Level.SEVERE, String.format("Error in timeline %d, %s", lineCount, e.getMessage()));
-//                throw new IllegalStateException(String.format("Error in timeline %d, %s", lineCount, e.getMessage()));
+                throw new IllegalStateException(String.format("Error in timeline %d, %s", lineCount, e.getMessage()));
             }
             else if (errorType.contains("org.yaml.snakeyaml")) {
                 Pattern pattern = Pattern.compile(regexParser, Pattern.MULTILINE);
@@ -117,11 +119,11 @@ public class ReadTimeLine {
                     sentence = matcher.group(4);
                 }
                 log.log(Level.SEVERE, String.format("Error on line %d, column %d: undefined alias %s", line, column, sentence));
-//                throw new IllegalStateException(String.format("Error on line %d, column %d: undefined alias %s", line, column, sentence));
+                throw new IllegalStateException(String.format("Error on line %d, column %d: undefined alias %s", line, column, sentence));
             }
             else {
                 log.log(Level.SEVERE, String.format("Error in timeline %d, %s", lineCount, e.getMessage()));
-//                throw new IllegalStateException(String.format("Error in timeline %d: %s", lineCount, e.getMessage()));
+                throw new IllegalStateException(String.format("Error in timeline %d, %s", lineCount, e.getMessage()));
             }
         }
     }
