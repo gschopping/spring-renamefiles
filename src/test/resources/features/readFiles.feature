@@ -1,13 +1,13 @@
 Feature: Read Files
 
   Scenario: Read all media files from given directory
-    Given directory "Z:\workspace\resources"
+    Given root directory "../files"
     When read all media files
-    Then the number of files should be 10
-    And the first file should be "SonyA77.m2ts"
-    And the last file should be "SonyA77.ARW"
+    Then the number of files should be 11
+    And the first file should be "DJIOsmoPlus.DNG"
+    And the last file should be "SonyFX30.HIF"
 
-  Scenario: Read subdirectories with Timelaps files
-    Given directory "Z:\workspace\resources"
-    When read Timelaps subdirectories
-    Then the number of directories should be 2
+  Scenario: Read subdirectories with TimeLaps files
+    Given root directory "../files"
+    When read all timeLaps directories
+    Then the number of directories should be 3

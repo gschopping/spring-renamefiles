@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 public class FileType {
     private String fileType;
     private String extension;
-    private String dateTime;
+    private String dateTime = "DateTimeOriginal";
     private String timeZone;
-    private String gpsLatitude;
-    private String gpsLongitude;
-    private Boolean isWritable;
-    private Boolean isPhotoFormat;
+    private String gpsLatitude = "GPSLatitude";
+    private String gpsLongitude = "GPSLongitude";
+    private Boolean isWritable = false;
+    private Boolean isPhotoFormat = true;
 
     @Override
     public String toString() {

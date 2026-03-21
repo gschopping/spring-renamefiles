@@ -181,9 +181,9 @@ public class ReadConfig {
                 if (matcher.find()) {
                     sentence = matcher.group(1);
                 }
-                throw new IllegalStateException(String.format("Error in timeline %d, incorrect dateformat: %s", lineCount, sentence));
+                throw new IllegalStateException(String.format("Error in config %d, incorrect dateformat: %s", lineCount, sentence));
             } else if (errorType.equals("java.lang.Exception")) {
-                throw new IllegalStateException(String.format("Error in timeline %d, %s", lineCount, e.getMessage()));
+                throw new IllegalStateException(String.format("Error in config %d, %s", lineCount, e.getMessage()));
             } else if (errorType.contains("org.yaml.snakeyaml")) {
                 Pattern pattern = Pattern.compile(regexParser, Pattern.MULTILINE);
                 Matcher matcher = pattern.matcher(e.getMessage());
@@ -197,7 +197,7 @@ public class ReadConfig {
                 }
                 throw new IllegalStateException(String.format("Error on line %d, column %d: undefined alias %s", line, column, sentence));
             } else {
-                throw new IllegalStateException(String.format("Error in timeline %d: %s", lineCount, e.getMessage()));
+                throw new IllegalStateException(String.format("Error in config %d: %s", lineCount, e.getMessage()));
             }
         }
     }
@@ -245,7 +245,7 @@ public class ReadConfig {
     private void addFileType (FileType fileType) {
         for (FileType element : this.fileTypes) {
             if (fileType.getFileType().equals(element.getFileType())) {
-                throw new IllegalStateException(String.format("filetype: %s %s already exists", fileType.getFileType(), fileType.getFileType()));
+                throw new IllegalStateException(String.format("filetype %s already exists", fileType.getFileType()));
             }
         }
         this.fileTypes.add(fileType);
@@ -257,16 +257,16 @@ public class ReadConfig {
                 return filetype;
             }
         }
-        return null;
+        return new FileType();
     }
 
     public String getRegexMedia(FileFormat fileFormat) {
-        ArrayList<FileType> items = (ArrayList<FileType>) this.getFileTypes().clone();
+        ArrayList<FileType> items = this.getFileTypes();
         if (fileFormat == FileFormat.PHOTO) {
             // remove all but isPhotoFormat filetypes
             items.removeIf(item -> !item.getIsPhotoFormat());
         } else if (fileFormat == FileFormat.VIDEO) {
-            items.removeIf(item -> item.getIsPhotoFormat());
+            items.removeIf(FileType::getIsPhotoFormat);
         }
 
         StringBuilder result = new StringBuilder("^(");

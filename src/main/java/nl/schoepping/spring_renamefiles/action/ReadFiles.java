@@ -11,6 +11,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 
 @Log
 public class ReadFiles {
@@ -32,29 +33,42 @@ public class ReadFiles {
     }
 
     private void  setFiles() {
-        ReadConfig config =  new ReadConfig("config.yml");
-        ReadTimeLine timeLines = new ReadTimeLine("timeline.yml");
-        File dir = new File(this.path);
-        File[] files = dir.listFiles();
-        ReadAddress address = new ReadAddress();
-        int counter = 1;
-        if (files != null) {
-            for (File file : files) {
-                if (file.isFile() && file.getName().toUpperCase().matches(this.regexMedia)) {
-                    log.info("Reading file " + file.getName());
-                    ReadExifInfo exifInfo = new ReadExifInfo(file.getPath(), config);
-                    TimeLine timeLine = timeLines.getTimeLine(exifInfo.getExifInfo().getCreationDate());
-                    String newFileName = "";
-                    String title;
-                    Address location = new Address();
-                    if (exifInfo.getExifInfo().getLatitude() != null && exifInfo.getExifInfo().getLongitude() != null) {
-                        MapOpenStreetMap mapOSM = new MapOpenStreetMap(config, address.getLocation(exifInfo.getExifInfo()));
-                        if (timeLine.getOverrideTitle()) {
-                            title = timeLine.getTitle();
+        try {
+            ReadConfig config =  new ReadConfig("config.yml");
+            ReadTimeLine timeLines = new ReadTimeLine("timeline.yml");
+            File dir = new File(this.path);
+            File[] files = dir.listFiles();
+            ReadAddress address = new ReadAddress();
+            int counter = 1;
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isFile() && file.getName().toUpperCase().matches(this.regexMedia)) {
+                        log.info("Reading file " + file.getName());
+                        ReadExifInfo exifInfo = new ReadExifInfo(file.getPath(), config);
+                        TimeLine timeLine = timeLines.getTimeLine(exifInfo.getExifInfo().getCreationDate());
+                        String newFileName = "";
+                        String title;
+                        Address location = new Address();
+                        if (exifInfo.getExifInfo().getLatitude() != null && exifInfo.getExifInfo().getLongitude() != null) {
+                            MapOpenStreetMap mapOSM = new MapOpenStreetMap(config, address.getLocation(exifInfo.getExifInfo()));
+                            if (timeLine.getOverrideTitle()) {
+                                title = timeLine.getTitle();
+                            } else {
+                                title = mapOSM.getAddress().getTitle();
+                            }
+                            if (timeLine.getOverrideLocation()) {
+                                location.setTitle(timeLine.getTitle());
+                                location.setDescription(timeLine.getDescription());
+                                location.setLocation(timeLine.getLocation());
+                                location.setCity(timeLine.getCity());
+                                location.setProvince(timeLine.getProvince());
+                                location.setCountry(timeLine.getCountry());
+                                location.setCountryCode(timeLine.getCountryCode());
+                            } else {
+                                location = mapOSM.getAddress();
+                            }
                         } else {
-                            title = mapOSM.getAddress().getTitle();
-                        }
-                        if (timeLine.getOverrideLocation()) {
+                            title = timeLine.getTitle();
                             location.setTitle(timeLine.getTitle());
                             location.setDescription(timeLine.getDescription());
                             location.setLocation(timeLine.getLocation());
@@ -62,65 +76,57 @@ public class ReadFiles {
                             location.setProvince(timeLine.getProvince());
                             location.setCountry(timeLine.getCountry());
                             location.setCountryCode(timeLine.getCountryCode());
-                        } else {
-                            location = mapOSM.getAddress();
                         }
-                    } else {
-                        title = timeLine.getTitle();
-                        location.setTitle(timeLine.getTitle());
-                        location.setDescription(timeLine.getDescription());
-                        location.setLocation(timeLine.getLocation());
-                        location.setCity(timeLine.getCity());
-                        location.setProvince(timeLine.getProvince());
-                        location.setCountry(timeLine.getCountry());
-                        location.setCountryCode(timeLine.getCountryCode());
+                        if (divider == Divider.TIME) {
+                            newFileName = String.format("%s-%s%s %s.%s",
+                                    exifInfo.getExifInfo().getCreationDateString(),
+                                    exifInfo.getExifInfo().getCreationTimeString(),
+                                    "%s",
+                                    title,
+                                    Files.getFileExtension(file.getName())
+                            );
+                        } else if (divider == Divider.COUNTER) {
+                            newFileName = String.format("%s-%04d%s %s.%s",
+                                    exifInfo.getExifInfo().getCreationDateString(),
+                                    counter,
+                                    "%s",
+                                    title,
+                                    Files.getFileExtension(file.getName())
+                            );
+                        }
+                        if (exifInfo.getExifInfo().getLatitude() != null && exifInfo.getExifInfo().getLongitude() != null) {
+                            this.files.add(ReadFile.builder()
+                                    .fileName(file.getName())
+                                    .newFileName(newFileName)
+                                    .filePath(this.path)
+                                    .resultsPath(this.path + "/" + config.getPathForResults())
+                                    .exifInfo(exifInfo.getExifInfo())
+                                    .timeLine(timeLine)
+                                    .fileType(config.getFileType(exifInfo.getExifInfo().getFileType()))
+                                    .location(address.getLocation(exifInfo.getExifInfo()))
+                                    .address(location)
+                                    .build()
+                            );
+                        } else {
+                            this.files.add(ReadFile.builder()
+                                    .fileName(file.getName())
+                                    .newFileName(newFileName)
+                                    .filePath(this.path)
+                                    .resultsPath(this.path + "/" + config.getPathForResults())
+                                    .exifInfo(exifInfo.getExifInfo())
+                                    .timeLine(timeLine)
+                                    .fileType(config.getFileType(exifInfo.getExifInfo().getFileType()))
+                                    .address(location)
+                                    .build()
+                            );
+                        }
+                        counter++;
                     }
-                    if (divider == Divider.TIME) {
-                        newFileName = String.format("%s-%s%s %s.%s",
-                                exifInfo.getExifInfo().getCreationDateString(),
-                                exifInfo.getExifInfo().getCreationTimeString(),
-                                "%s",
-                                title,
-                                Files.getFileExtension(file.getName())
-                        );
-                    } else if (divider == Divider.COUNTER) {
-                        newFileName = String.format("%s-%04d%s %s.%s",
-                                exifInfo.getExifInfo().getCreationDateString(),
-                                counter,
-                                "%s",
-                                title,
-                                Files.getFileExtension(file.getName())
-                        );
-                    }
-                    if (exifInfo.getExifInfo().getLatitude() != null && exifInfo.getExifInfo().getLongitude() != null) {
-                        this.files.add(ReadFile.builder()
-                                .fileName(file.getName())
-                                .newFileName(newFileName)
-                                .filePath(this.path)
-                                .resultsPath(this.path + "/" + config.getPathForResults())
-                                .exifInfo(exifInfo.getExifInfo())
-                                .timeLine(timeLine)
-                                .fileType(config.getFileType(exifInfo.getExifInfo().getFileType()))
-                                .location(address.getLocation(exifInfo.getExifInfo()))
-                                .address(location)
-                                .build()
-                        );
-                    } else {
-                        this.files.add(ReadFile.builder()
-                                .fileName(file.getName())
-                                .newFileName(newFileName)
-                                .filePath(this.path)
-                                .resultsPath(this.path + "/" + config.getPathForResults())
-                                .exifInfo(exifInfo.getExifInfo())
-                                .timeLine(timeLine)
-                                .fileType(config.getFileType(exifInfo.getExifInfo().getFileType()))
-                                .address(location)
-                                .build()
-                        );
-                    }
-                    counter++;
                 }
             }
+        }
+        catch  (Exception e) {
+            log.log(Level.SEVERE, "Error reading files: " + e.getMessage(), e);
         }
     }
 

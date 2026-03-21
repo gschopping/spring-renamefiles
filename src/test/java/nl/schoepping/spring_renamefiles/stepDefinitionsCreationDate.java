@@ -32,4 +32,5 @@ public class stepDefinitionsCreationDate {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         Assert.assertEquals(creationDate, exifInfo.getExifInfo().getCreationDate().format(formatter));
     }
+
 }
