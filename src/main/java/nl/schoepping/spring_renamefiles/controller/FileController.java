@@ -1,14 +1,13 @@
 package nl.schoepping.spring_renamefiles.controller;
 
 import lombok.extern.java.Log;
-import nl.schoepping.spring_renamefiles.action.ReadConfig;
-import nl.schoepping.spring_renamefiles.action.ReadFiles;
-import nl.schoepping.spring_renamefiles.action.WriteExifInfo;
+import nl.schoepping.spring_renamefiles.action.*;
 import nl.schoepping.spring_renamefiles.domain.ReadFile;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,6 +19,7 @@ public class FileController {
     public List<ReadFile> getFiles() {
         ReadConfig config = new ReadConfig("config.yml");
         ReadFiles readFiles = new ReadFiles("../files", config.getRegexMedia(ReadConfig.FileFormat.ALL), ReadFiles.Divider.TIME);
+        readFiles.setFiles();
         return readFiles.getFiles();
     }
 
@@ -29,6 +29,7 @@ public class FileController {
         if (subfolder.matches(config.getPathForGPS())) {
             // GPS files, has the same geo location
             ReadFiles readFiles = new ReadFiles("../files/" + subfolder, config.getRegexMedia(ReadConfig.FileFormat.ALL), ReadFiles.Divider.TIME);
+            readFiles.setFiles();
             readFiles.updateFiles();
             return readFiles.getFiles();
         } else if (subfolder.matches(config.getPathForTimelaps())) {
@@ -43,8 +44,8 @@ public class FileController {
     public WriteExifInfo getFile(@PathVariable String filename) {
         ReadConfig config = new ReadConfig("config.yml");
         ReadFiles readFiles = new ReadFiles("../files", config.getRegexMedia(ReadConfig.FileFormat.ALL), ReadFiles.Divider.TIME);
-        ReadFile readFile;
-        readFile = readFiles.getReadFile(filename);
+        File file = new File("../files/" + filename);
+        ReadFile readFile = readFiles.getFile(file, config, new ReadTimeLine("timeline.yml"), new ReadAddress(), 1);
         if (readFile != null) {
             return new WriteExifInfo(readFile, config.getConfigExif(), true);
         }

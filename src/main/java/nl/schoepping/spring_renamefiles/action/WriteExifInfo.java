@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Log
 public class WriteExifInfo {
@@ -121,7 +123,7 @@ public class WriteExifInfo {
 
     private void setCountryCode2(String countryCode) {
         if (countryCode != null) {
-            setTag(this.config.getCountryCode2(), countryCode);
+            setTag(this.config.getCountryCode2(), countryCode.toUpperCase());
         }
     }
 
@@ -190,6 +192,23 @@ public class WriteExifInfo {
         if (instructions != null) {
             setTag(this.config.getInstructions(), instructions);
         }
+    }
+
+    public String getTag(String tag) {
+        boolean found = false;
+        int index = 0;
+        String value = null;
+        Pattern pattern = Pattern.compile("-" + tag + "=(.*)");
+        Matcher matcher;
+        while (!found && index < this.arguments.size()) {
+            matcher = pattern.matcher(this.arguments.get(index));
+            if (matcher.find()) {
+                value = matcher.group(1);
+                found = true;
+            }
+            index++;
+        }
+        return value;
     }
 
     private void writeArguments() throws IOException {

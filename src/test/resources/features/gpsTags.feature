@@ -1,7 +1,7 @@
 Feature: Read GPS tags and get address
 
   Scenario: Read GPS from Sony RAW file
-    Given File "SonyA77.m2ts"
+    Given mediaFile "SonyA77.m2ts"
     When read GPS tags
     Then latitude should be "51.454183"
     And longitude should be "3.653545"
@@ -10,20 +10,20 @@ Feature: Read GPS tags and get address
     And city should be "Vlissingen"
 
   Scenario: Read GPS from Sony RAW file and writes found address information
-    Given File "SonyA77.ARW"
-    When read GPS tags and write address information to file "results\SonyA77.ARW"
-    Then tag "XMP:City" should contain "Schouwen-Duiveland"
+    Given mediaFile "SonyA77.ARW"
+    When read GPS tags and write address information to file "20190316-180906 Bruinisse.ARW"
+    Then tag "XMP:City" should contain "Bruinisse"
     And tag "XMP:CountryCode" should contain "NL"
     And tag "IPTC:Country-PrimaryLocationCode" should contain "NLD"
     And tag "XMP:Country" should contain "Nederland"
     And tag "IPTC:Country-PrimaryLocationName" should contain "Nederland"
     And tag "XMP:State" should contain "Zeeland"
     And tag "IPTC:Province-State" should contain "Zeeland"
-    And tag "IPTC:ObjectName" should contain "Bruinisse"
-    And tag "IPTC:Sub-location" should contain "Bruinisse"
+    And tag "IPTC:ObjectName" should contain "Strandweg"
+    And tag "IPTC:Sub-location" should contain "Strandweg"
 
   Scenario: Read GPS if not in file
-    Given File "SonyA6300.ARW"
+    Given mediaFile "SonyA6300.ARW"
     When read GPS tags
-    Then latitude should be "0.0"
-    And longitude should be "0.0"
+    Then latitude should be null
+    And longitude should be null
