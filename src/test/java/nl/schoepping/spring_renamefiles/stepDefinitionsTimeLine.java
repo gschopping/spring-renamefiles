@@ -96,4 +96,5 @@ public class stepDefinitionsTimeLine {
         // Write code here that turns the phrase above into concrete actions
         Assert.assertEquals(Boolean.FALSE, readTimeLine.getEnabled());
     }
+
 }

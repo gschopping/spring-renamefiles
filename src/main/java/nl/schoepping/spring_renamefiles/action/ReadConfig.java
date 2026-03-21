@@ -36,8 +36,8 @@ public class ReadConfig {
         ALL
     }
 
-    public ReadConfig() {
-        String configFile = "../config/config.yml";
+    public ReadConfig(String fileName) {
+        String configFile = "../config/" + fileName;
         int lineCount = 0;
         try {
             InputStream input = new FileInputStream(new File(configFile));

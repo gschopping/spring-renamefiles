@@ -5,7 +5,6 @@ import lombok.extern.java.Log;
 import nl.schoepping.spring_renamefiles.domain.TimeLine;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.internal.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;

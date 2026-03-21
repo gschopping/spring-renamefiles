@@ -18,14 +18,14 @@ public class FileController {
 
     @GetMapping(path = "/files/root")
     public List<ReadFile> getFiles() {
-        ReadConfig config = new ReadConfig();
+        ReadConfig config = new ReadConfig("config.yml");
         ReadFiles readFiles = new ReadFiles("../files", config.getRegexMedia(ReadConfig.FileFormat.ALL), ReadFiles.Divider.TIME);
         return readFiles.getFiles();
     }
 
     @GetMapping(path = "/files/{subfolder}")
     public List<ReadFile> getFiles(@PathVariable String subfolder) {
-        ReadConfig config = new ReadConfig();
+        ReadConfig config = new ReadConfig("config.yml");
         if (subfolder.matches(config.getPathForGPS())) {
             // GPS files, has the same geo location
             ReadFiles readFiles = new ReadFiles("../files/" + subfolder, config.getRegexMedia(ReadConfig.FileFormat.ALL), ReadFiles.Divider.TIME);
@@ -41,7 +41,7 @@ public class FileController {
 
     @GetMapping(path = "/file/{filename}")
     public WriteExifInfo getFile(@PathVariable String filename) {
-        ReadConfig config = new ReadConfig();
+        ReadConfig config = new ReadConfig("config.yml");
         ReadFiles readFiles = new ReadFiles("../files", config.getRegexMedia(ReadConfig.FileFormat.ALL), ReadFiles.Divider.TIME);
         ReadFile readFile;
         readFile = readFiles.getReadFile(filename);

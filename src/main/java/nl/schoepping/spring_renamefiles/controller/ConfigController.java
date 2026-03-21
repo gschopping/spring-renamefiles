@@ -19,14 +19,14 @@ public class ConfigController {
 
     @GetMapping(path = "/config/{fileType}")
     public FileType config(@PathVariable("fileType") String fileType) {
-        ReadConfig config = new ReadConfig();
+        ReadConfig config = new ReadConfig("config.yml");
         return config.getFileType(fileType);
     }
 
     @GetMapping(path = "/config/path")
     public List<String> configPath() {
         List<String> paths = new ArrayList<>();
-        ReadConfig config = new ReadConfig();
+        ReadConfig config = new ReadConfig("config.yml");
         paths.add(config.getPathForTimelaps());
         paths.add(config.getPathForGPS());
         paths.add(config.getPathForResults());
@@ -38,13 +38,13 @@ public class ConfigController {
 
     @GetMapping(path = "config/exif")
     public ConfigExif configExif() {
-        ReadConfig config = new ReadConfig();
+        ReadConfig config = new ReadConfig("config.yml");
         return config.getConfigExif();
     }
 
     @GetMapping(path = "config/osm")
     public ConfigOpenStreetMap configOSM() {
-        ReadConfig config = new ReadConfig();
+        ReadConfig config = new ReadConfig("config.yml");
         return config.getConfigOSM();
     }
 }
