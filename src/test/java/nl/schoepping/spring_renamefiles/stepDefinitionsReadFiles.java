@@ -7,6 +7,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import nl.schoepping.spring_renamefiles.action.ReadConfig;
 import nl.schoepping.spring_renamefiles.action.ReadFiles;
+import nl.schoepping.spring_renamefiles.action.ReadTimeLine;
 import nl.schoepping.spring_renamefiles.domain.ReadFile;
 import org.junit.Assert;
 
@@ -26,7 +27,7 @@ public class stepDefinitionsReadFiles {
     public void rootDirectory(String path) {
         // Write code here that turns the phrase above into concrete actions
         config = new ReadConfig("config.yml");
-        readFiles = new ReadFiles(path, config.getRegexMedia(ReadConfig.FileFormat.ALL), ReadFiles.Divider.TIME);
+        readFiles = new ReadFiles(path, config, new ReadTimeLine("timeline.yml"), config.getRegexMedia(ReadConfig.FileFormat.ALL), ReadFiles.Divider.TIME);
         File dir = new File(path);
         dirs = dir.listFiles();
     }

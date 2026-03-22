@@ -22,13 +22,17 @@ public class ReadFiles {
         TIME
     }
     private final Divider divider;
+    private final ReadConfig config;
+    private final ReadTimeLine timeLines;
     @Getter
     private List<ReadFile> files = new ArrayList<>();
 
-    public ReadFiles(String path, String regexMedia, Divider divider) {
+    public ReadFiles(String path, ReadConfig config, ReadTimeLine timeLines,  String regexMedia, Divider divider) {
         this.path = path;
         this.regexMedia = regexMedia;
         this.divider = divider;
+        this.config = config;
+        this.timeLines = timeLines;
     }
 
     public ReadFile getFile(File file, ReadConfig config, ReadTimeLine timeLines, ReadAddress address, int counter) {
@@ -111,8 +115,6 @@ public class ReadFiles {
 
     public void  setFiles() {
         try {
-            ReadConfig config =  new ReadConfig("config.yml");
-            ReadTimeLine timeLines = new ReadTimeLine("timeline.yml");
             File dir = new File(this.path);
             File[] files = dir.listFiles();
             ReadAddress address = new ReadAddress();

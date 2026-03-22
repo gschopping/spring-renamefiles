@@ -22,14 +22,14 @@ public class stepDefinitionsGps {
     private WriteExifInfo writeExifInfo;
 
     @Given("mediaFile {string}")
-    public void mediafile(String fileName) {
+    public void mediaFile(String fileName) {
         // Write code here that turns the phrase above into concrete actions
         config =  new ReadConfig("config.yml");
         ReadTimeLine timeLines = new ReadTimeLine("timeline.yml");
         ReadAddress address = new ReadAddress();
         try {
             File file = new File("../files/" + fileName);
-            readFile = new ReadFiles("../files", config.getRegexMedia(ReadConfig.FileFormat.ALL), ReadFiles.Divider.TIME).getFile(file, config, timeLines, address,1);
+            readFile = new ReadFiles("../files", config, timeLines, config.getRegexMedia(ReadConfig.FileFormat.ALL), ReadFiles.Divider.TIME).getFile(file, config, timeLines, address,1);
         }
         catch (Exception e) {
             errorMessage = e.getMessage();
@@ -97,4 +97,5 @@ public class stepDefinitionsGps {
         // Write code here that turns the phrase above into concrete actions
         Assert.assertNull(readFile.getExifInfo().getLongitude());
     }
+
 }

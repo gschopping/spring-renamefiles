@@ -67,7 +67,7 @@ public class WriteExifInfo {
                     newFileName = String.format(readFile.getNewFileName(), postfix);
                 }
                 try {
-                    writeFile(readFile.getResultsPath() + "/" + newFileName, false);
+                    writeFile(newFileName, false);
                     noError = true;
                     log.info("Rename file " + readFile.getFileName() + " to " + newFileName);
                 } catch (Exception e) {
@@ -184,7 +184,7 @@ public class WriteExifInfo {
 
     private void setKeys2(String[] keys) {
         if (keys.length > 0) {
-            setTag(config.getKeys2(), String.join(", ", keys));
+            setTag(config.getKeys2(), String.join(",", keys));
         }
     }
 
@@ -195,18 +195,22 @@ public class WriteExifInfo {
     }
 
     public String getTag(String tag) {
-        boolean found = false;
         int index = 0;
         String value = null;
-        Pattern pattern = Pattern.compile("-" + tag + "=(.*)");
+        Pattern pattern = Pattern.compile("^-" + tag + "=(.*)$");
         Matcher matcher;
-        while (!found && index < this.arguments.size()) {
-            matcher = pattern.matcher(this.arguments.get(index));
+        String argument;
+        for (; index < this.arguments.size(); index++) {
+            argument = this.arguments.get(index);
+            matcher = pattern.matcher(argument);
             if (matcher.find()) {
-                value = matcher.group(1);
-                found = true;
+                if (value == null) {
+                    value = matcher.group(1);
+                }
+                else {
+                    value = value.concat("," + matcher.group(1));
+                }
             }
-            index++;
         }
         return value;
     }
@@ -232,7 +236,7 @@ public class WriteExifInfo {
 
         if (readFile.getFileType().getIsWritable()) {
             writeArguments();
-            String[] cmdString = new String[] { exiftool, "-m", "-charset", "FileName=UTF8", "-api", "largefilesupport=1", "-@", tempFile, readFile.getFilePath() + "/" + readFile.getFileName(), "-o", readFile.getResultsPath() +"/" + newFileName };
+            String[] cmdString = new String[] { exiftool, "-m", "-charset", "FileName=UTF8", "-charset", "UTF8", "-charset", "IPTC=UTF8", "-api", "largefilesupport=1", "-@", tempFile, readFile.getFilePath() + "/" + readFile.getFileName(), "-o", readFile.getResultsPath() +"/" + newFileName };
             log.config("Executing " + String.join(" ", cmdString));
             Process process = Runtime.getRuntime().exec(cmdString);
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -254,7 +258,6 @@ public class WriteExifInfo {
         }
         else {
             if (this.removeOriginal) {
-//                FileUtils.moveFile(new File(this.mediaFile), destinationFile);
                 Files.move(Paths.get(readFile.getFilePath() + "/" + readFile.getFileName()), destinationFile.toPath());
             }
             else {
