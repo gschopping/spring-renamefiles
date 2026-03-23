@@ -119,4 +119,4 @@ Feature: read config yaml file
 
   Scenario: config file contains nul fileType
     Given config file "config_null_filetype.yml"
-    Then an error should be thrown with the message "Error in config 2: Cannot invoke \"String.equals(Object)\" because the return value of \"nl.schoepping.spring_renamefiles.domain.FileType.getFileType()\" is null"
+    Then an error should be thrown with the message "Error in config 2: Cannot invoke \"String.equals(Object)\" because the return value of \"nl.schoepping.renamefiles.domain.FileType.getFileType()\" is null"

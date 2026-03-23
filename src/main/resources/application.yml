@@ -1,0 +1,4 @@
+path:
+  pathTimeLaps: "^(Timelaps\\d+)$"
+  pathGPS: "^(GPS\\d+)$"
+  pathResults: "results"

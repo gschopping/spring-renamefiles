@@ -1,14 +1,13 @@
 package nl.schoepping.spring_renamefiles;
 
-import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import nl.schoepping.spring_renamefiles.action.ReadConfig;
-import nl.schoepping.spring_renamefiles.action.ReadFiles;
-import nl.schoepping.spring_renamefiles.action.ReadTimeLine;
-import nl.schoepping.spring_renamefiles.domain.ReadFile;
+import nl.schoepping.renamefiles.action.ReadConfig;
+import nl.schoepping.renamefiles.action.ReadFiles;
+import nl.schoepping.renamefiles.action.ReadTimeLine;
+import nl.schoepping.renamefiles.domain.ReadFile;
 import org.junit.Assert;
 
 import java.io.File;
@@ -35,6 +34,7 @@ public class stepDefinitionsReadFiles {
     @When("read all media files")
     public void readAllMediaFiles() {
         // Write code here that turns the phrase above into concrete actions
+        readFiles.setFiles();
         files = readFiles.getFiles();
     }
 
@@ -47,13 +47,13 @@ public class stepDefinitionsReadFiles {
     @And("the first file should be {string}")
     public void theFirstFileShouldBe(String fileName) {
         // Write code here that turns the phrase above into concrete actions
-        Assert.assertEquals(fileName, files.getFirst().getFileName());
+        Assert.assertEquals(fileName, files.get(0).getFileName());
     }
 
     @And("the last file should be {string}")
     public void theLastFileShouldBe(String fileName) {
         // Write code here that turns the phrase above into concrete actions
-        Assert.assertEquals(fileName, files.getLast().getFileName());
+        Assert.assertEquals(fileName, files.get(files.size()-1).getFileName());
     }
 
     @When("read all timeLaps directories")
@@ -61,7 +61,7 @@ public class stepDefinitionsReadFiles {
         // Write code here that turns the phrase above into concrete actions
         dirCount = 0;
         for (File dir : dirs) {
-            if (dir.isDirectory() && dir.getName().matches(config.getPathForTimelaps())) {
+            if (dir.isDirectory() && dir.getName().matches(config.getConfigPath().getPathForTimeLaps())) {
                 dirCount++;
             }
         }

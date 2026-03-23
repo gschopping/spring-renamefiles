@@ -1,10 +1,9 @@
 package nl.schoepping.spring_renamefiles;
 
-import io.cucumber.java.PendingException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import nl.schoepping.spring_renamefiles.action.ReadConfig;
-import nl.schoepping.spring_renamefiles.action.ReadExifInfo;
+import nl.schoepping.renamefiles.action.ReadConfig;
+import nl.schoepping.renamefiles.action.ReadExifInfo;
 import org.junit.Assert;
 
 import java.time.format.DateTimeFormatter;

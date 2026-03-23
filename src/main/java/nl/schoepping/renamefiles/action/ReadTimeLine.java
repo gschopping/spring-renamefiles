@@ -1,12 +1,11 @@
-package nl.schoepping.spring_renamefiles.action;
+package nl.schoepping.renamefiles.action;
 
 import lombok.Getter;
 import lombok.extern.java.Log;
-import nl.schoepping.spring_renamefiles.domain.TimeLine;
+import nl.schoepping.renamefiles.domain.TimeLine;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.time.LocalDateTime;
@@ -24,10 +23,9 @@ public class ReadTimeLine {
 
     @Getter
     private Boolean Enabled = true;
-    private Boolean AvoidNonAscii = true;
     private final List<TimeLine> timeLines = new ArrayList<>();
 
-    class SortByDate implements Comparator<TimeLine> {
+    static class SortByDate implements Comparator<TimeLine> {
         @Override
         public int compare(TimeLine o1, TimeLine o2) {
             return o1.getStartDate().compareTo(o2.getStartDate());
@@ -38,7 +36,7 @@ public class ReadTimeLine {
         String timeLineFile = "../config/" +  filename;
         int lineCount = 0;
         try {
-            InputStream input = new FileInputStream(new File(timeLineFile));
+            InputStream input = new FileInputStream(timeLineFile);
             LoaderOptions options = new LoaderOptions();
             int maxNodes = 1000;
             try {
@@ -46,7 +44,9 @@ public class ReadTimeLine {
                     maxNodes = Integer.parseInt(System.getenv("MAX_NODES"));
                 }
             }
-            catch (Exception e) {}
+            catch (Exception e) {
+                log.log(Level.WARNING, "Could not parse max nodes. Using default value " + maxNodes);
+            }
             options.setMaxAliasesForCollections(maxNodes);
             Yaml yaml = new Yaml(options);
             Map timeLine = yaml.load(input);
@@ -55,9 +55,6 @@ public class ReadTimeLine {
                 Map config = (Map) timeLine.get("config");
                 if (config.get("enabled") != null) {
                     this.Enabled = (Boolean) config.get("enabled");
-                }
-                if (config.get("avoidnonascii") != null) {
-                    this.AvoidNonAscii = (Boolean) config.get("avoidnonascii");
                 }
             }
 

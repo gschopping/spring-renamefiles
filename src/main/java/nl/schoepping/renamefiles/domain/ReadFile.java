@@ -1,4 +1,4 @@
-package nl.schoepping.spring_renamefiles.domain;
+package nl.schoepping.renamefiles.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,17 +1,15 @@
-package nl.schoepping.spring_renamefiles.controller;
+package nl.schoepping.renamefiles.controller;
 
 
 import lombok.extern.java.Log;
-import nl.schoepping.spring_renamefiles.action.ReadConfig;
-import nl.schoepping.spring_renamefiles.domain.ConfigExif;
-import nl.schoepping.spring_renamefiles.domain.ConfigOpenStreetMap;
-import nl.schoepping.spring_renamefiles.domain.FileType;
+import nl.schoepping.renamefiles.action.ReadConfig;
+import nl.schoepping.renamefiles.domain.ConfigExif;
+import nl.schoepping.renamefiles.domain.ConfigOpenStreetMap;
+import nl.schoepping.renamefiles.domain.ConfigPath;
+import nl.schoepping.renamefiles.domain.FileType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @Log
@@ -24,16 +22,9 @@ public class ConfigController {
     }
 
     @GetMapping(path = "/config/path")
-    public List<String> configPath() {
-        List<String> paths = new ArrayList<>();
+    public ConfigPath  configPath() {
         ReadConfig config = new ReadConfig("config.yml");
-        paths.add(config.getPathForTimelaps());
-        paths.add(config.getPathForGPS());
-        paths.add(config.getPathForResults());
-        paths.add(config.getRegexMedia(ReadConfig.FileFormat.ALL));
-        paths.add(config.getRegexMedia(ReadConfig.FileFormat.PHOTO));
-        paths.add(config.getRegexMedia(ReadConfig.FileFormat.VIDEO));
-        return paths;
+        return config.getConfigPath();
     }
 
     @GetMapping(path = "config/exif")

@@ -1,12 +1,11 @@
 package nl.schoepping.spring_renamefiles;
 
-import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import nl.schoepping.spring_renamefiles.action.ReadConfig;
-import nl.schoepping.spring_renamefiles.domain.FileType;
+import nl.schoepping.renamefiles.action.ReadConfig;
+import nl.schoepping.renamefiles.domain.FileType;
 import org.junit.Assert;
 
 import java.util.Arrays;
@@ -144,19 +143,19 @@ public class stepDefinitionsConfig {
     @Then("pathResults should be {string}")
     public void pathresultsShouldBe(String path) {
         // Write code here that turns the phrase above into concrete actions
-        Assert.assertEquals(path, config.getPathForResults());
+        Assert.assertEquals(path, config.getConfigPath().getPathForResults());
     }
 
     @And("pathTimeLaps should be {string}")
     public void pathtimelapsShouldBe(String path) {
         // Write code here that turns the phrase above into concrete actions
-        Assert.assertEquals(path, config.getPathForTimelaps());
+        Assert.assertEquals(path, config.getConfigPath().getPathForTimeLaps());
     }
 
     @And("pathGps should be {string}")
     public void pathgpsShouldBe(String path) {
         // Write code here that turns the phrase above into concrete actions
-        Assert.assertEquals(path, config.getPathForGPS());
+        Assert.assertEquals(path, config.getConfigPath().getPathForGps());
     }
 
     @Then("an error should be thrown with the message {string}")

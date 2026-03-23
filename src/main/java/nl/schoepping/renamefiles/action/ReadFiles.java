@@ -1,16 +1,15 @@
-package nl.schoepping.spring_renamefiles.action;
+package nl.schoepping.renamefiles.action;
 
 import com.google.common.io.Files;
 import lombok.Getter;
 import lombok.extern.java.Log;
-import nl.schoepping.spring_renamefiles.domain.Address;
-import nl.schoepping.spring_renamefiles.domain.ReadFile;
-import nl.schoepping.spring_renamefiles.domain.TimeLine;
+import nl.schoepping.renamefiles.domain.Address;
+import nl.schoepping.renamefiles.domain.ReadFile;
+import nl.schoepping.renamefiles.domain.TimeLine;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
 
 @Log
@@ -92,7 +91,7 @@ public class ReadFiles {
                     .fileName(file.getName())
                     .newFileName(newFileName)
                     .filePath(this.path)
-                    .resultsPath(this.path + "/" + config.getPathForResults())
+                    .resultsPath(this.path + "/" + config.getConfigPath().getPathForResults())
                     .exifInfo(exifInfo.getExifInfo())
                     .timeLine(timeLine)
                     .fileType(config.getFileType(exifInfo.getExifInfo().getFileType()))
@@ -104,7 +103,7 @@ public class ReadFiles {
                     .fileName(file.getName())
                     .newFileName(newFileName)
                     .filePath(this.path)
-                    .resultsPath(this.path + "/" + config.getPathForResults())
+                    .resultsPath(this.path + "/" + config.getConfigPath().getPathForResults())
                     .exifInfo(exifInfo.getExifInfo())
                     .timeLine(timeLine)
                     .fileType(config.getFileType(exifInfo.getExifInfo().getFileType()))
@@ -176,20 +175,6 @@ public class ReadFiles {
                 updateFileWithGpsInfo(readFile, getNearestGPSFile(readFile));
             }
         }
-    }
-
-    public ReadFile getReadFile(String filename) {
-        int index = 0;
-        boolean found = false;
-        ReadFile readFile = null;
-        while (index < this.files.size() - 1 && !found) {
-            if (Objects.equals(this.files.get(index).getFileName(), filename)) {
-                readFile = this.files.get(index);
-                found = true;
-            }
-            index++;
-        }
-        return readFile;
     }
 
 }

@@ -1,15 +1,14 @@
 package nl.schoepping.spring_renamefiles;
 
-import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import nl.schoepping.spring_renamefiles.action.ReadConfig;
-import nl.schoepping.spring_renamefiles.action.ReadFiles;
-import nl.schoepping.spring_renamefiles.action.ReadTimeLine;
-import nl.schoepping.spring_renamefiles.action.WriteExifInfo;
-import nl.schoepping.spring_renamefiles.domain.ReadFile;
+import nl.schoepping.renamefiles.action.ReadConfig;
+import nl.schoepping.renamefiles.action.ReadFiles;
+import nl.schoepping.renamefiles.action.ReadTimeLine;
+import nl.schoepping.renamefiles.action.WriteExifInfo;
+import nl.schoepping.renamefiles.domain.ReadFile;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.junit.Assert;
 

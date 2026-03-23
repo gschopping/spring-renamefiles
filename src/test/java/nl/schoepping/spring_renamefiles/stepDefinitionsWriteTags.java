@@ -1,13 +1,11 @@
 package nl.schoepping.spring_renamefiles;
 
-import io.cucumber.java.PendingException;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import nl.schoepping.spring_renamefiles.action.*;
-import nl.schoepping.spring_renamefiles.domain.OSMLocation;
-import nl.schoepping.spring_renamefiles.domain.ReadFile;
+import nl.schoepping.renamefiles.action.*;
+import nl.schoepping.renamefiles.domain.OSMLocation;
+import nl.schoepping.renamefiles.domain.ReadFile;
 import org.junit.Assert;
 
 import java.io.File;

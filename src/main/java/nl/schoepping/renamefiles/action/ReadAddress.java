@@ -1,15 +1,15 @@
-package nl.schoepping.spring_renamefiles.action;
+package nl.schoepping.renamefiles.action;
 
 import lombok.extern.java.Log;
-import nl.schoepping.spring_renamefiles.domain.ExifInfo;
-import nl.schoepping.spring_renamefiles.domain.OSMLocation;
+import nl.schoepping.renamefiles.domain.ExifInfo;
+import nl.schoepping.renamefiles.domain.OSMLocation;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestClient;
 
 @Log
 public class ReadAddress {
 
-    private RestClient client;
+    private final RestClient client;
 
     public ReadAddress() {
         this.client = RestClient.builder()

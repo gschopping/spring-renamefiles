@@ -5,7 +5,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(basePackages = "nl.schoepping.spring_renamefiles")
+@ComponentScan(basePackages = "nl.schoepping.renamefiles")
 @EnableAutoConfiguration
 public class ApplicationTest {
 }

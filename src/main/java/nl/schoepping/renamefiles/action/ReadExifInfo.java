@@ -1,8 +1,8 @@
-package nl.schoepping.spring_renamefiles.action;
+package nl.schoepping.renamefiles.action;
 
 import lombok.extern.java.Log;
-import nl.schoepping.spring_renamefiles.domain.ExifInfo;
-import nl.schoepping.spring_renamefiles.domain.FileType;
+import nl.schoepping.renamefiles.domain.ExifInfo;
+import nl.schoepping.renamefiles.domain.FileType;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,9 +18,9 @@ import java.util.regex.Pattern;
 
 @Log
 public class ReadExifInfo {
-    private String exiftool;
-    private String filePath;
-    private ReadConfig config;
+    private final String exiftool;
+    private final String filePath;
+    private final ReadConfig config;
 
     public ReadExifInfo(String filePath, ReadConfig config) {
         this.filePath = filePath;
@@ -84,8 +84,8 @@ public class ReadExifInfo {
             log.log(Level.SEVERE, e.getMessage());
         }
 
-        // Read creationdate
-        String dateString = null;
+        // Read creation's
+        String dateString;
         String timeZone = "+00:00";
         String filetype = map.get("FileType");
         result.setFileType(filetype);
@@ -99,7 +99,7 @@ public class ReadExifInfo {
             }
             if (map.get(fileType.getTimeZone()) != null) {
                 timeZone = map.get(fileType.getTimeZone());
-            };
+            }
         }
         // if dateString is still empty then try another tag which includes the timezone
         if (dateString == null) {

@@ -1,9 +1,11 @@
-package nl.schoepping.spring_renamefiles.action;
+package nl.schoepping.renamefiles.action;
 
 import lombok.Getter;
-import nl.schoepping.spring_renamefiles.domain.ConfigExif;
-import nl.schoepping.spring_renamefiles.domain.ConfigOpenStreetMap;
-import nl.schoepping.spring_renamefiles.domain.FileType;
+import lombok.extern.java.Log;
+import nl.schoepping.renamefiles.domain.ConfigExif;
+import nl.schoepping.renamefiles.domain.ConfigOpenStreetMap;
+import nl.schoepping.renamefiles.domain.ConfigPath;
+import nl.schoepping.renamefiles.domain.FileType;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -16,20 +18,17 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Log
 public class ReadConfig {
 
     @Getter
-    private String pathForTimelaps = "^(Timelaps\\d+)$";
+    private ConfigPath configPath;
     @Getter
-    private String pathForGPS = "^(GPS\\d+)$";
+    private ConfigExif configExif;
     @Getter
-    private String pathForResults = "results";
+    private ConfigOpenStreetMap configOSM;
     @Getter
-    private ConfigExif configExif = new ConfigExif();
-    @Getter
-    private ConfigOpenStreetMap configOSM = new ConfigOpenStreetMap();
-    @Getter
-    private final ArrayList<FileType> fileTypes = new ArrayList<>();
+    private final ArrayList<FileType> fileTypes;
     public enum FileFormat {
         PHOTO,
         VIDEO,
@@ -38,6 +37,10 @@ public class ReadConfig {
 
     public ReadConfig(String fileName) {
         String configFile = "../config/" + fileName;
+        configPath = new ConfigPath();
+        configExif = new ConfigExif();
+        configOSM = new ConfigOpenStreetMap();
+        fileTypes = new ArrayList<>();
         int lineCount = 0;
         try {
             InputStream input = new FileInputStream(new File(configFile));
@@ -47,13 +50,16 @@ public class ReadConfig {
             if (config.get("config") != null) {
                 Map configSection = (Map) config.get("config");
                 if (configSection.get("pathTimelaps") != null) {
-                    pathForTimelaps = (String) configSection.get("pathTimelaps");
+                    configPath.setPathForTimeLaps((String) configSection.get("pathTimelaps"));
                 }
                 if (configSection.get("pathGPS") != null) {
-                    pathForGPS = (String) configSection.get("pathGPS");
+                    configPath.setPathForGps((String) configSection.get("pathGPS"));
                 }
                 if (configSection.get("pathResults") != null) {
-                    pathForResults = (String) configSection.get("pathResults");
+                    configPath.setPathForResults((String) configSection.get("pathResults"));
+                }
+                if (configSection.get("pathDNG") != null) {
+                    configPath.setPathForDng((String) configSection.get("pathDNG"));
                 }
             }
 

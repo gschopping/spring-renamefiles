@@ -1,12 +1,11 @@
 package nl.schoepping.spring_renamefiles;
 
-import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import nl.schoepping.spring_renamefiles.action.ReadTimeLine;
-import nl.schoepping.spring_renamefiles.domain.TimeLine;
+import nl.schoepping.renamefiles.action.ReadTimeLine;
+import nl.schoepping.renamefiles.domain.TimeLine;
 import org.junit.Assert;
 
 import java.time.LocalDateTime;

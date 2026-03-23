@@ -1,9 +1,9 @@
-package nl.schoepping.spring_renamefiles.action;
+package nl.schoepping.renamefiles.action;
 
 import lombok.Getter;
 import lombok.extern.java.Log;
-import nl.schoepping.spring_renamefiles.domain.ConfigExif;
-import nl.schoepping.spring_renamefiles.domain.ReadFile;
+import nl.schoepping.renamefiles.domain.ConfigExif;
+import nl.schoepping.renamefiles.domain.ReadFile;
 
 import java.io.*;
 import java.nio.file.Files;

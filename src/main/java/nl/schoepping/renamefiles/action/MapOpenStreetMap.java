@@ -1,12 +1,12 @@
-package nl.schoepping.spring_renamefiles.action;
+package nl.schoepping.renamefiles.action;
 
 import lombok.Getter;
-import nl.schoepping.spring_renamefiles.domain.Address;
-import nl.schoepping.spring_renamefiles.domain.OSMLocation;
+import nl.schoepping.renamefiles.domain.Address;
+import nl.schoepping.renamefiles.domain.OSMLocation;
 
 public class MapOpenStreetMap {
 
-    private OSMLocation location;
+    private final OSMLocation location;
     @Getter
     private Address address = new Address();
 
