@@ -14,7 +14,7 @@
 	<name>renamefiles-api</name>
 	<description>Rename image and video files</description>
 	<properties>
-		<java.version>16</java.version>
+		<java.version>25</java.version>
 		<start-class>nl.schoepping.renamefiles.RenamefilesApi</start-class>
 	</properties>
 

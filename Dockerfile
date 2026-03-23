@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk16:alpine-jre
+FROM eclipse-temurin:25-jre-alpine
 WORKDIR /app
 
 ENV PATH="/opt/exiftool:$PATH"
@@ -19,14 +19,14 @@ RUN set -eux \
   && EXIFTOOL_ARCHIVE=Image-ExifTool-${EXIFTOOL_VERSION}.tar.gz \
   && curl -s -O https://exiftool.org/$EXIFTOOL_ARCHIVE \
   && CHECKSUM=`curl -s https://exiftool.org/checksums.txt | grep SHA1\(${EXIFTOOL_ARCHIVE} | awk -F'= ' '{print $2}'` \
-  && echo "${CHECKSUM}  ${EXIFTOOL_ARCHIVE}" | /usr/bin/sha1sum -c -s - \
+  && echo "${CHECKSUM}  ${EXIFTOOL_ARCHIVE}" | /usr/bin/sha1sum -c - \
   && tar xzf $EXIFTOOL_ARCHIVE --strip-components=1 \
   && rm -f $EXIFTOOL_ARCHIVE \
   && exiftool -ver
 
-COPY target/renamefiles-api-0.0.1-SNAPSHOT.jar /app/api.jar
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} /app/api.jar
 RUN mkdir /app/config
 RUN mkdir /app/files
 RUN mkdir /app/log
-#CMD java -cp /app/api.jar nl.schoepping.renamefiles/RenamefilesApi
 ENTRYPOINT ["java","-jar","/app/api.jar"]
