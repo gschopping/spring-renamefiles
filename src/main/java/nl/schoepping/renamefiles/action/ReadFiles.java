@@ -121,8 +121,13 @@ public class ReadFiles {
             if (files != null) {
                 for (File file : files) {
                     if (file.isFile() && file.getName().toUpperCase().matches(this.regexMedia)) {
-                        this.files.add(getFile(file, config, timeLines, address, counter));
-                        counter++;
+                        try {
+                            this.files.add(getFile(file, config, timeLines, address, counter));
+                            counter++;
+                        }
+                        catch (Exception e) {
+                            log.log(Level.SEVERE, "Error reading file " + file.getName() +  " : " + e.getMessage(), e);
+                        }
                     }
                 }
             }

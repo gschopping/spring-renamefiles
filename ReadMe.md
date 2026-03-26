@@ -80,24 +80,25 @@ case from Open Street Maps.
 - **timezone**: the tag to use for timezone, not always used in that case use the same tag as used for *datetime*
 - **isWritable**: exiftool can´t write back tags to all files, certain filetypes are not supported. To avoid unnecessary trials, you can set isWritable in that case to *false*.
 - **isPhotoFormat**: this is only for timelaps files, which always should be of photo format, so only picks the extensions where isPhotoFormat is set to *true*.
-- **gpslatitude** and **gpslongitude**: which tag to use for retrieving GPS data, so far itś always *GPSLatitude* and *GPSLongitude*.
+- **gpslatitude**,
+- **gpslongitude**: which tag to use for retrieving GPS data, so far itś always *GPSLatitude* and *GPSLongitude*.
 
 
 ## Internal fields in use
 However to get these things mapped correctly you should understand that in the application the following fields are considered:
-- title (used for renaming the file)
-- description (will be written to the metadata)
-- location (will be writen to the metadata)
-- city (will be writen to the metadata)
-- province (will be writen to the metadata)
-- country (will be writen to the metadata)
-- countrycode (will be writen to the metadata)
-- author (will be writen to the metadata)
-- copyright (will be writen to the metadata)
-- comment (will be writen to the metadata)
-- url (will be writen to the metadata)
-- keys (will be writen to the metadata)
-- instructions (will be writen to the metadata)
+- **title** (used for renaming the file)
+- **description** (will be written to the metadata)
+- **location** (will be written to the metadata)
+- **city** (will be written to the metadata)
+- **province** (will be written to the metadata)
+- **country** (will be written to the metadata)
+- **countrycode** (will be written to the metadata)
+- **author** (will be written to the metadata)
+- **copyright** (will be written to the metadata)
+- **comment** (will be written to the metadata)
+- **url** (will be written to the metadata)
+- **keys** (will be written to the metadata)
+- **instructions** (will be written to the metadata)
 
 ## Map internal fields to exif tags
 To write back the internal fields to the correct exif tag, that can be configured as well in the *config.yml*:
@@ -161,7 +162,7 @@ the application translate it to a 3 letter code. For keys you see also two separ
 internal fields you just set keys with comma separated and the application converts it to an array or keeps it as a string.
 
 ## Map the Open Street Map data to the internal fields
-The oposite is also true, you should define in the *config.yml* how to map the fields which come from the Open Street Maps API
+The opposite is also true, you should define in the *config.yml* how to map the fields which come from the Open Street Maps API
 into the internal fields.
 ```yaml
 # you can choose from the following fields:
@@ -228,7 +229,7 @@ config:
     pathTimelaps: "^(Timelaps\\d+)$"
     pathGPS: "^(GPS\\d+)$"
     pathResults: "results"
-- ```
+```
 If you don´t set the above values, it will be set as default by the application.
 
 # Timeline yaml
@@ -262,7 +263,7 @@ default: &default
     countrycode: NL
     province: Noord-Holland
     city: Amsterdam
-    creator: Guido Schöpping
+    author: Guido Schöpping
     website: www.schopping.net
     copyright: Guido Schöpping (2025)
     overrideTitle: false
@@ -317,19 +318,19 @@ each of these sequences in a separate subfolder *Timelaps1*, *Timelaps2*, etc.
 Suppose you have a whole load of images used for a timelaps then it can be wise to set *enabled* to *false* to not renaming the files before you uploaded all files. Otherwise the numbering would be messed up.
 
 ## Bind mounts
-| Host path         | Container path                | Comment |
-| ---               | ---                           | ---     |
-| config.yml        | /app/config/config.yml        | file    |
-| timeline.yml      | /app/config/timeline.yml      | file    |
-| files             | /app/files                    | folder  |
+| Host path    | Container path           | Comment |
+|--------------|--------------------------|---------|
+| config.yml   | /app/config/config.yml   | file    |
+| timeline.yml | /app/config/timeline.yml | file    |
+| files        | /app/files               | folder  |
 
 ## Environment variables
-| Tag                   | Default value                 | Comment |
-| ----                  | ---                           | ---     |
-| MAX_NODES             | 1000                          | Maximum number of timelines, see the [snakeyaml documentation](https://bitbucket.org/snakeyaml/snakeyaml/wiki/Documentation) for further explanation. |
-| DATETIMEFORMAT_YAML   | yyyy-MM-dd HH:mm:ss           | The [format](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/format/DateTimeFormatter.html) used to read the startdate in the timeline.yml. Note that the method *DateTimeFormatter.ofPattern* is used. |
-| DATETIMEFORMAT_OUTPUT | yyyyMMdd-HHmmss               | Output format when date and time is used to rename the filename |
-| DATEFORMAT_OUTPUT     | yyyyMMdd                      | Output form when only date is used (in combination with a sequential number) to rename the filename |
+| Tag                   | Default value       | Comment                                                                                                                                                                                                                        |
+|-----------------------|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| MAX_NODES             | 1000                | Maximum number of timelines, see the [snakeyaml documentation](https://bitbucket.org/snakeyaml/snakeyaml/wiki/Documentation) for further explanation.                                                                          |
+| DATETIMEFORMAT_YAML   | yyyy-MM-dd HH:mm:ss | The [format](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/format/DateTimeFormatter.html) used to read the startdate in the timeline.yml. Note that the method *DateTimeFormatter.ofPattern* is used. |
+| DATETIMEFORMAT_OUTPUT | yyyyMMdd-HHmmss     | Output format when date and time is used to rename the filename                                                                                                                                                                |
+| DATEFORMAT_OUTPUT     | yyyyMMdd            | Output form when only date is used (in combination with a sequential number) to rename the filename                                                                                                                            |
 
 ## Docker compose
 You can use also a docker compose file to configure the bind mounts and environments:
@@ -352,3 +353,17 @@ services:
       - DATEFORMAT_OUTPUT=yyyyMMdd
     restart: always
 ```
+
+# Endpoints
+To access the application you have the following endpoints:
+
+| Name                 | Request | Usage                                                              |
+|----------------------|---------|--------------------------------------------------------------------|
+| /config/{fileType}   | GET     | Gives the filetype information for a given filetype                |
+| /config/path         | GET     | Gives the information as mentioned under config in the config.yml  |
+| /config/exif         | GET     |                                                                    |
+| /config/osm          | GET     |                                                                    |
+| /timeline            | GET     | Reads the all timelines                                            |
+| /timeline/{datetime} | GET     | Gives the timeline for which this datetime is valid                |
+| /files/root          | GET     | Read all files with additional information from the root directory |
+| /files/{subfolder}   | GET     | Read all files with additional information from given subfolder    |

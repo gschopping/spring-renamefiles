@@ -263,7 +263,7 @@ public class ReadConfig {
                 return filetype;
             }
         }
-        return new FileType();
+        return null;
     }
 
     public String getRegexMedia(FileFormat fileFormat) {

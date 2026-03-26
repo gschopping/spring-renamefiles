@@ -147,8 +147,14 @@ public class ReadTimeLine {
             value = (String) item.get("city");
             timeline.setCity(value);
         }
+        // keep for backwards compatibility
         if (item.get("creator") != null) {
             value = (String) item.get("creator");
+            timeline.setAuthor(value);
+        }
+        // correct value in timeline.yml
+        if (item.get("author") != null) {
+            value = (String) item.get("author");
             timeline.setAuthor(value);
         }
         if (item.get("website") != null) {
