@@ -109,9 +109,9 @@ public class WriteExifInfo {
         }
     }
 
-    private void setCopyright(String copyright) {
-        if (copyright != null) {
-            setTag(this.config.getCopyright(), copyright);
+    private void setCopyright(String copyRight) {
+        if (copyRight != null) {
+            setTag(this.config.getCopyRight(), copyRight);
         }
     }
 

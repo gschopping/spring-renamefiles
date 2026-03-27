@@ -13,7 +13,8 @@ import java.util.List;
 @Builder
 public class Config {
     private ConfigPath path;
-//    private ConfigExif exif;
-//    private ConfigOpenStreetMap openStreetMap;
-//    private List<FileType> fileTypes;
+    private ConfigExif exif;
+    private ConfigOpenStreetMap openStreetMap;
+    private FileType standard;
+    private List<FileType> fileTypes;
 }

@@ -26,7 +26,7 @@ public class ReadFiles {
     @Getter
     private List<ReadFile> files = new ArrayList<>();
 
-    public ReadFiles(String path, ReadConfig config, ReadTimeLine timeLines,  String regexMedia, Divider divider) {
+    public ReadFiles(String path, ReadConfig config, ReadTimeLine timeLines, String regexMedia, Divider divider) {
         this.path = path;
         this.regexMedia = regexMedia;
         this.divider = divider;
@@ -91,7 +91,7 @@ public class ReadFiles {
                     .fileName(file.getName())
                     .newFileName(newFileName)
                     .filePath(this.path)
-                    .resultsPath(this.path + "/" + config.getConfigPath().getPathForResults())
+                    .resultsPath(this.path + "/" + config.getConfig().getPath().getPathForResults())
                     .exifInfo(exifInfo.getExifInfo())
                     .timeLine(timeLine)
                     .fileType(config.getFileType(exifInfo.getExifInfo().getFileType()))
@@ -103,7 +103,7 @@ public class ReadFiles {
                     .fileName(file.getName())
                     .newFileName(newFileName)
                     .filePath(this.path)
-                    .resultsPath(this.path + "/" + config.getConfigPath().getPathForResults())
+                    .resultsPath(this.path + "/" + config.getConfig().getPath().getPathForResults())
                     .exifInfo(exifInfo.getExifInfo())
                     .timeLine(timeLine)
                     .fileType(config.getFileType(exifInfo.getExifInfo().getFileType()))

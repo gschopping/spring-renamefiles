@@ -12,13 +12,13 @@ public class MapOpenStreetMap {
 
     public MapOpenStreetMap(ReadConfig config, OSMLocation location) {
         this.location = location;
-        this.address.setTitle(getMap(config.getConfigOSM().getTitle()));
-        this.address.setDescription(getMap(config.getConfigOSM().getDescription()));
-        this.address.setLocation(getMap(config.getConfigOSM().getLocation()));
-        this.address.setCity(getMap(config.getConfigOSM().getCity()));
-        this.address.setProvince(getMap(config.getConfigOSM().getProvince()));
-        this.address.setCountry(getMap(config.getConfigOSM().getCountry()));
-        this.address.setCountryCode(getMap(config.getConfigOSM().getCountryCode()));
+        this.address.setTitle(getMap(config.getConfig().getOpenStreetMap().getTitle()));
+        this.address.setDescription(getMap(config.getConfig().getOpenStreetMap().getDescription()));
+        this.address.setLocation(getMap(config.getConfig().getOpenStreetMap().getLocation()));
+        this.address.setCity(getMap(config.getConfig().getOpenStreetMap().getCity()));
+        this.address.setProvince(getMap(config.getConfig().getOpenStreetMap().getProvince()));
+        this.address.setCountry(getMap(config.getConfig().getOpenStreetMap().getCountry()));
+        this.address.setCountryCode(getMap(config.getConfig().getOpenStreetMap().getCountryCode()));
     }
 
     private String getMap(String[] keys) {

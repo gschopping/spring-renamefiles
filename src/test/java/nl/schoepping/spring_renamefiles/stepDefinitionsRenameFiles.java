@@ -4,10 +4,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import nl.schoepping.renamefiles.action.ReadConfig;
-import nl.schoepping.renamefiles.action.ReadFiles;
-import nl.schoepping.renamefiles.action.ReadTimeLine;
-import nl.schoepping.renamefiles.action.WriteExifInfo;
+import nl.schoepping.renamefiles.action.*;
 import nl.schoepping.renamefiles.domain.ReadFile;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.junit.Assert;
@@ -46,7 +43,7 @@ public class stepDefinitionsRenameFiles {
         readFiles.setFiles();
         List<ReadFile> files = readFiles.getFiles();
         for (ReadFile file : files) {
-            WriteExifInfo writeExifInfo = new WriteExifInfo(file, config.getConfigExif(), false);
+            WriteExifInfo writeExifInfo = new WriteExifInfo(file, config.getConfig().getExif(), false);
             writeExifInfo.writeExifInfoToFile();
         }
     }
@@ -77,7 +74,7 @@ public class stepDefinitionsRenameFiles {
         readFiles.setFiles();
         List<ReadFile> files = readFiles.getFiles();
         for (ReadFile file : files) {
-            WriteExifInfo writeExifInfo = new WriteExifInfo(file, config.getConfigExif(), false);
+            WriteExifInfo writeExifInfo = new WriteExifInfo(file, config.getConfig().getExif(), false);
             writeExifInfo.writeExifInfoToFile();
         }
     }

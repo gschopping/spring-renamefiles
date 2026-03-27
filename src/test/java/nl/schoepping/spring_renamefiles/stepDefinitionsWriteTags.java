@@ -37,7 +37,7 @@ public class stepDefinitionsWriteTags {
     public void writeAuthor(String author) {
         // Write code here that turns the phrase above into concrete actions
         readFile.getTimeLine().setAuthor(author);
-        writeExifInfo = new WriteExifInfo(readFile, config.getConfigExif(), true);
+        writeExifInfo = new WriteExifInfo(readFile, config.getConfig().getExif(), true);
     }
 
     @Then("tag {string} should contain author {string}")
@@ -50,7 +50,7 @@ public class stepDefinitionsWriteTags {
     public void writeCity(String city) {
         // Write code here that turns the phrase above into concrete actions
         readFile.getAddress().setCity(city);
-        writeExifInfo = new WriteExifInfo(readFile, config.getConfigExif(), true);
+        writeExifInfo = new WriteExifInfo(readFile, config.getConfig().getExif(), true);
     }
 
     @Then("tag {string} should contain city {string}")
@@ -63,7 +63,7 @@ public class stepDefinitionsWriteTags {
     public void writeTitle(String title) {
         // Write code here that turns the phrase above into concrete actions
         readFile.getAddress().setTitle(title);
-        writeExifInfo = new WriteExifInfo(readFile, config.getConfigExif(), true);
+        writeExifInfo = new WriteExifInfo(readFile, config.getConfig().getExif(), true);
     }
 
     @Then("tag {string} should contain title {string}")
@@ -76,7 +76,7 @@ public class stepDefinitionsWriteTags {
     public void writeKeys(String keys) {
         // Write code here that turns the phrase above into concrete actions
         readFile.getTimeLine().setKeys(keys);
-        writeExifInfo = new WriteExifInfo(readFile, config.getConfigExif(), true);
+        writeExifInfo = new WriteExifInfo(readFile, config.getConfig().getExif(), true);
     }
 
     @Then("tag {string} should contain keys {string}")
@@ -89,7 +89,7 @@ public class stepDefinitionsWriteTags {
     public void writeCountry(String country) {
         // Write code here that turns the phrase above into concrete actions
         readFile.getAddress().setCountry(country);
-        writeExifInfo = new WriteExifInfo(readFile, config.getConfigExif(), true);
+        writeExifInfo = new WriteExifInfo(readFile, config.getConfig().getExif(), true);
     }
 
     @Then("tag {string} should contain country {string}")

@@ -1,20 +1,52 @@
 package nl.schoepping.renamefiles.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class ConfigOpenStreetMap {
-    private String[] title = {"town", "city", "village", "municipality"};
-    private String[] description = {"display_name"};
-    private String[] location = {"suburb", "neighbourhood", "city_district", "quarter", "district", "road", "footway"};
-    private String[] city = {"town", "city", "village", "municipality"};
-    private String[] province = {"state", "county"};
-    private String[] country = {"country"};
-    private String[] countryCode = {"country_code"};
+    @Getter(AccessLevel.NONE)
+    private String title = "town city village municipality";
+    @Getter(AccessLevel.NONE)
+    private String description = "display_name";
+    @Getter(AccessLevel.NONE)
+    private String location = "suburb neighbourhood city_district quarter district road footway";
+    @Getter(AccessLevel.NONE)
+    private String city = "town city village municipality";
+    @Getter(AccessLevel.NONE)
+    private String province = "state county";
+    @Getter(AccessLevel.NONE)
+    private String country = "country";
+    @Getter(AccessLevel.NONE)
+    private String countryCode = "country_code";
+
+    public String[] getTitle() {
+        return this.title.split(" ");
+    }
+
+    public String[] getDescription() {
+        return this.description.split(" ");
+    }
+
+    public String[] getLocation() {
+        return this.location.split(" ");
+    }
+
+    public String[] getCity() {
+        return this.city.split(" ");
+    }
+
+    public String[] getCountry() {
+        return this.country.split(" ");
+    }
+
+    public String[] getProvince() {
+        return this.province.split(" ");
+    }
+
+    public String[] getCountryCode() {
+        return this.countryCode.split(" ");
+    }
 }

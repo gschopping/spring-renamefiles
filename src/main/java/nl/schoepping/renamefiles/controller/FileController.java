@@ -3,7 +3,6 @@ package nl.schoepping.renamefiles.controller;
 import lombok.extern.java.Log;
 import nl.schoepping.renamefiles.action.*;
 import nl.schoepping.renamefiles.domain.ReadFile;
-import nl.schoepping.renamefiles.action.*;
 import nl.schoepping.renamefiles.domain.RenameFiles;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,13 +36,13 @@ public class FileController {
     public ResponseEntity<List<ReadFile>> getFiles(@PathVariable String subfolder) {
         try {
             ReadConfig config = new ReadConfig("config.yml");
-            if (subfolder.matches(config.getConfigPath().getPathForGps())) {
+            if (subfolder.matches(config.getConfig().getPath().getPathForGps())) {
                 // GPS files, has the same geolocation
                 ReadFiles readFiles = new ReadFiles("../files/" + subfolder, config, new ReadTimeLine("timeline.yml"), config.getRegexMedia(ReadConfig.FileFormat.ALL), ReadFiles.Divider.TIME);
                 readFiles.setFiles();
                 readFiles.updateFiles();
                 return new ResponseEntity<>(readFiles.getFiles(), HttpStatus.OK);
-            } else if (subfolder.matches(config.getConfigPath().getPathForTimeLaps())) {
+            } else if (subfolder.matches(config.getConfig().getPath().getPathForTimeLaps())) {
                 // Timelapse folder only contain photos, and should be numbered.
                 ReadFiles readFiles = new ReadFiles("../files/" + subfolder, config, new ReadTimeLine("timeline.yml"), config.getRegexMedia(ReadConfig.FileFormat.PHOTO), ReadFiles.Divider.COUNTER);
                 return new ResponseEntity<>(readFiles.getFiles(), HttpStatus.OK);
@@ -64,7 +63,7 @@ public class FileController {
             File file = new File("../files/" + filename);
             ReadFile readFile = readFiles.getFile(file, config, new ReadTimeLine("timeline.yml"), new ReadAddress(), 1);
             if (readFile != null) {
-                return new ResponseEntity<>(new WriteExifInfo(readFile, config.getConfigExif(), true), HttpStatus.OK);
+                return new ResponseEntity<>(new WriteExifInfo(readFile, config.getConfig().getExif(), true), HttpStatus.OK);
             }
             else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -91,7 +90,7 @@ public class FileController {
             if (renameFiles.getActionAction().equals(RenameFiles.Action.MOVE)) {
                 removeOriginal = true;
             }
-            renameFiles.setConfig(config.getConfigPath());
+            renameFiles.setConfig(config.getConfig().getPath());
 
             if (readTimeLine.getEnabled()) {
                 if (renameFiles.isRoot()) {
@@ -101,7 +100,7 @@ public class FileController {
                     files = readFiles.getFiles();
                     totalFiles = files;
                     for (ReadFile file : files) {
-                        WriteExifInfo writeExifInfo = new WriteExifInfo(file, config.getConfigExif(), removeOriginal);
+                        WriteExifInfo writeExifInfo = new WriteExifInfo(file, config.getConfig().getExif(), removeOriginal);
                         writeExifInfo.writeExifInfoToFile();
                     }
                 }
@@ -116,7 +115,7 @@ public class FileController {
                             files = readFiles.getFiles();
                             totalFiles.addAll(files);
                             for (ReadFile file : files) {
-                                WriteExifInfo writeExifInfo = new WriteExifInfo(file, config.getConfigExif(), removeOriginal);
+                                WriteExifInfo writeExifInfo = new WriteExifInfo(file, config.getConfig().getExif(), removeOriginal);
                                 writeExifInfo.writeExifInfoToFile();
                             }
                         }
@@ -128,7 +127,7 @@ public class FileController {
                             files = readFiles.getFiles();
                             totalFiles.addAll(files);
                             for (ReadFile file : files) {
-                                WriteExifInfo writeExifInfo = new WriteExifInfo(file, config.getConfigExif(), removeOriginal);
+                                WriteExifInfo writeExifInfo = new WriteExifInfo(file, config.getConfig().getExif(), removeOriginal);
                                 writeExifInfo.writeExifInfoToFile();
                             }
                         }

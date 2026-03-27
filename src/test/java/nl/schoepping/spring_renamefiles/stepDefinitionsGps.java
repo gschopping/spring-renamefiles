@@ -74,7 +74,7 @@ public class stepDefinitionsGps {
     public void readGPSTagsAndWriteAddressInformationToFile(String fileName) {
         // Write code here that turns the phrase above into concrete actions
         Assert.assertEquals(fileName, String.format(readFile.getNewFileName(), ""));
-        writeExifInfo = new WriteExifInfo(readFile, config.getConfigExif(), true);
+        writeExifInfo = new WriteExifInfo(readFile, config.getConfig().getExif(), true);
     }
 
     @Then("tag {string} should contain {string}")

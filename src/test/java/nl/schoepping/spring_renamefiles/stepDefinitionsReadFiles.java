@@ -61,7 +61,7 @@ public class stepDefinitionsReadFiles {
         // Write code here that turns the phrase above into concrete actions
         dirCount = 0;
         for (File dir : dirs) {
-            if (dir.isDirectory() && dir.getName().matches(config.getConfigPath().getPathForTimeLaps())) {
+            if (dir.isDirectory() && dir.getName().matches(config.getConfig().getPath().getPathForTimeLaps())) {
                 dirCount++;
             }
         }

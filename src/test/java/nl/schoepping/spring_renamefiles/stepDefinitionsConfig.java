@@ -30,13 +30,13 @@ public class stepDefinitionsConfig {
     @Then("^number of fileTypes should be (\\d+)$")
     public void numberOfFileTypes(int count) {
         // Write code here that turns the phrase above into concrete actions
-        Assert.assertEquals(count, config.getFileTypes().size());
+        Assert.assertEquals(count, config.getConfig().getFileTypes().size());
     };
 
     @When("get item {int}")
     public void getItem(int index) {
         // Write code here that turns the phrase above into concrete actions
-        fileType = config.getFileTypes().get(index-1);
+        fileType = config.getConfig().getFileTypes().get(index-1);
     }
 
     @Then("fileType should be {string}")
@@ -90,7 +90,7 @@ public class stepDefinitionsConfig {
     @When("get the author exif tags")
     public void getTheAuthorExifTags() {
         // Write code here that turns the phrase above into concrete actions
-        tags = config.getConfigExif().getAuthor();
+        tags = config.getConfig().getExif().getAuthor();
     }
 
     @Then("tags should contain {string}")
@@ -102,31 +102,31 @@ public class stepDefinitionsConfig {
     @When("get the location exif tags\"")
     public void getTheLocationExifTags() {
         // Write code here that turns the phrase above into concrete actions    throw new io.cucumber.java.PendingException();}
-        tags = config.getConfigExif().getLocation();
+        tags = config.getConfig().getExif().getLocation();
     }
 
     @When("get the title exif tags")
     public void getTheTitleExifTags() {
         // Write code here that turns the phrase above into concrete actions
-        tags = config.getConfigExif().getTitle();
+        tags = config.getConfig().getExif().getTitle();
     }
 
     @When("get the description exif tags")
     public void getTheDescriptionExifTags() {
         // Write code here that turns the phrase above into concrete actions
-        tags = config.getConfigExif().getDescription();
+        tags = config.getConfig().getExif().getDescription();
     }
 
     @When("get the title osm tags")
     public void getTheTitleOsmTags() {
         // Write code here that turns the phrase above into concrete actions
-        tags = config.getConfigOSM().getTitle();
+        tags = config.getConfig().getOpenStreetMap().getTitle();
     }
 
     @When("get the description osm tags")
     public void getTheDescriptionOsmTags() {
         // Write code here that turns the phrase above into concrete actions
-        tags = config.getConfigOSM().getDescription();
+        tags = config.getConfig().getOpenStreetMap().getDescription();
     }
 
     @And("regexMedia should be {string}")
@@ -143,19 +143,19 @@ public class stepDefinitionsConfig {
     @Then("pathResults should be {string}")
     public void pathresultsShouldBe(String path) {
         // Write code here that turns the phrase above into concrete actions
-        Assert.assertEquals(path, config.getConfigPath().getPathForResults());
+        Assert.assertEquals(path, config.getConfig().getPath().getPathForResults());
     }
 
     @And("pathTimeLaps should be {string}")
     public void pathtimelapsShouldBe(String path) {
         // Write code here that turns the phrase above into concrete actions
-        Assert.assertEquals(path, config.getConfigPath().getPathForTimeLaps());
+        Assert.assertEquals(path, config.getConfig().getPath().getPathForTimeLaps());
     }
 
     @And("pathGps should be {string}")
     public void pathgpsShouldBe(String path) {
         // Write code here that turns the phrase above into concrete actions
-        Assert.assertEquals(path, config.getConfigPath().getPathForGps());
+        Assert.assertEquals(path, config.getConfig().getPath().getPathForGps());
     }
 
     @Then("an error should be thrown with the message {string}")

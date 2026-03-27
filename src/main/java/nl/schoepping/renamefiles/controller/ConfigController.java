@@ -3,11 +3,7 @@ package nl.schoepping.renamefiles.controller;
 
 import lombok.extern.java.Log;
 import nl.schoepping.renamefiles.action.ReadConfig;
-import nl.schoepping.renamefiles.action.ReadConfigNew;
-import nl.schoepping.renamefiles.domain.ConfigExif;
-import nl.schoepping.renamefiles.domain.ConfigOpenStreetMap;
-import nl.schoepping.renamefiles.domain.ConfigPath;
-import nl.schoepping.renamefiles.domain.FileType;
+import nl.schoepping.renamefiles.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +37,7 @@ public class ConfigController {
     @GetMapping(path = "/config/path")
     public ResponseEntity<ConfigPath>  configPath() {
         try {
-            ReadConfigNew config = new ReadConfigNew("config-path.yml");
+            ReadConfig config = new ReadConfig("config.yml");
             return new ResponseEntity<>(config.getConfig().getPath(), HttpStatus.OK);
         }
         catch (Exception e) {
@@ -54,7 +50,7 @@ public class ConfigController {
     public ResponseEntity<ConfigExif> configExif() {
         try {
             ReadConfig config = new ReadConfig("config.yml");
-            return new ResponseEntity<>(config.getConfigExif(), HttpStatus.OK);
+            return new ResponseEntity<>(config.getConfig().getExif(), HttpStatus.OK);
         }
         catch (Exception e) {
             log.log(Level.WARNING, e.getMessage());
@@ -66,7 +62,7 @@ public class ConfigController {
     public ResponseEntity<ConfigOpenStreetMap> configOSM() {
         try {
             ReadConfig config = new ReadConfig("config.yml");
-            return new ResponseEntity<>(config.getConfigOSM(), HttpStatus.OK);
+            return new ResponseEntity<>(config.getConfig().getOpenStreetMap(), HttpStatus.OK);
         }
         catch  (Exception e) {
             log.log(Level.WARNING, e.getMessage());
