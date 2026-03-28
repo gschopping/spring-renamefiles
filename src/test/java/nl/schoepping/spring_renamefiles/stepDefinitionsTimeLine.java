@@ -31,13 +31,13 @@ public class stepDefinitionsTimeLine {
     @Then("number of timelines should be {int}")
     public void numberOfTimelinesShouldBe(int count) {
         // Write code here that turns the phrase above into concrete actions
-        Assert.assertEquals(count, readTimeLine.getTimeLines().size());
+        Assert.assertEquals(count, readTimeLine.getTimeLinesSorted().size());
     }
 
     @When("get element {int}")
     public void getElement(int element) {
         // Write code here that turns the phrase above into concrete actions
-        timeLine = readTimeLine.getTimeLines().get(element - 1);
+        timeLine = readTimeLine.getTimeLinesSorted().get(element - 1);
     }
 
     @Then("copyright should be {string}")
@@ -94,7 +94,7 @@ public class stepDefinitionsTimeLine {
     @Then("variable enabled should be set to false")
     public void variable_enabled_should_be_set_to_false() {
         // Write code here that turns the phrase above into concrete actions
-        Assert.assertEquals(Boolean.FALSE, readTimeLine.getEnabled());
+        Assert.assertEquals(Boolean.FALSE, readTimeLine.getTimeLines().isEnabled());
     }
 
 }

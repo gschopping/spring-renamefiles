@@ -23,7 +23,7 @@ public class TimeLineController {
     public ResponseEntity<List<TimeLine>> getTimeLines() {
         try {
             ReadTimeLine reader = new ReadTimeLine("timeline.yml");
-            return new ResponseEntity<>(reader.getTimeLines(), HttpStatus.OK);
+            return new ResponseEntity<>(reader.getTimeLinesSorted(), HttpStatus.OK);
         }
         catch (Exception e) {
             log.log(Level.WARNING, e.getMessage(), e);

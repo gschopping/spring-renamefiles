@@ -92,8 +92,9 @@ public class FileController {
             }
             renameFiles.setConfig(config.getConfig().getPath());
 
-            if (readTimeLine.getEnabled()) {
+            if (readTimeLine.getTimeLines().isEnabled()) {
                 if (renameFiles.isRoot()) {
+                    log.log(Level.INFO, "Read root directory");
                     // root folder
                     readFiles = new ReadFiles("../files", config, readTimeLine, config.getRegexMedia(ReadConfig.FileFormat.ALL), ReadFiles.Divider.TIME);
                     readFiles.setFiles();
@@ -109,6 +110,7 @@ public class FileController {
                     for (File subdirectory : dirs) {
                         // GPS folders
                         if (subdirectory.isDirectory() && renameFiles.isGPS(subdirectory.getName())) {
+                            log.log(Level.INFO, "Read GPS directory: " + subdirectory.getName());
                             readFiles = new ReadFiles("../files/" + subdirectory.getName(), config, readTimeLine, config.getRegexMedia(ReadConfig.FileFormat.ALL), ReadFiles.Divider.TIME);
                             readFiles.setFiles();
                             readFiles.updateFiles();
@@ -122,6 +124,7 @@ public class FileController {
 
                         // TimeLaps folders
                         if (subdirectory.isDirectory() && renameFiles.isTimeLaps(subdirectory.getName())) {
+                            log.log(Level.INFO, "Read TimeLaps directory: " + subdirectory.getName());
                             readFiles = new ReadFiles("../files/" + subdirectory.getName(), config, readTimeLine, config.getRegexMedia(ReadConfig.FileFormat.PHOTO), ReadFiles.Divider.COUNTER);
                             readFiles.setFiles();
                             files = readFiles.getFiles();

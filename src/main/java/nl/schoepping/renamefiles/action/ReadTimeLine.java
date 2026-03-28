@@ -2,11 +2,15 @@ package nl.schoepping.renamefiles.action;
 
 import lombok.Getter;
 import lombok.extern.java.Log;
+import nl.schoepping.renamefiles.domain.Config;
 import nl.schoepping.renamefiles.domain.TimeLine;
+import nl.schoepping.renamefiles.domain.TimeLines;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,8 +26,7 @@ import java.util.regex.Pattern;
 public class ReadTimeLine {
 
     @Getter
-    private Boolean Enabled = true;
-    private final List<TimeLine> timeLines = new ArrayList<>();
+    private TimeLines timeLines;
 
     static class SortByDate implements Comparator<TimeLine> {
         @Override
@@ -32,8 +35,9 @@ public class ReadTimeLine {
         }
     }
 
-    public ReadTimeLine(String filename) {
-        String timeLineFile = "../config/" +  filename;
+    public ReadTimeLine(String fileName) {
+        this.timeLines = new TimeLines();
+        String timeLineFile = "../config/" +  fileName;
         int lineCount = 0;
         try {
             InputStream input = new FileInputStream(timeLineFile);
@@ -51,15 +55,12 @@ public class ReadTimeLine {
             Yaml yaml = new Yaml(options);
             Map timeLine = yaml.load(input);
 //            retrieve values for config
-            if (timeLine.get("config") != null) {
-                Map config = (Map) timeLine.get("config");
-                if (config.get("enabled") != null) {
-                    this.Enabled = (Boolean) config.get("enabled");
-                }
+            if (timeLine.get("enabled") != null) {
+                this.timeLines.setEnabled((Boolean) timeLine.get("enabled"));
             }
 
-            if (timeLine.get("timeline") != null) {
-                ArrayList<Map> timelineArray = (ArrayList<Map>) timeLine.get("timeline");
+            if (timeLine.get("timeLines") != null) {
+                ArrayList<Map> timelineArray = (ArrayList<Map>) timeLine.get("timeLines");
                 for (Map timelineItem : timelineArray) {
                     lineCount++;
                     setTimeLine(timelineItem);
@@ -96,12 +97,12 @@ public class ReadTimeLine {
                 if (matcher.find()) {
                     sentence = matcher.group(1);
                 }
-                log.log(Level.SEVERE, String.format("Error in timeline %d, incorrect dateformat: %s", lineCount, sentence));
-                throw new IllegalStateException(String.format("Error in timeline %d, incorrect dateformat: %s", lineCount, sentence));
+                log.log(Level.SEVERE, String.format("Error in timeLine %d, incorrect dateFormat: %s", lineCount, sentence));
+                throw new IllegalStateException(String.format("Error in timeLine %d, incorrect dateFormat: %s", lineCount, sentence));
             }
             else if (errorType.equals("java.lang.Exception")) {
-                log.log(Level.SEVERE, String.format("Error in timeline %d, %s", lineCount, e.getMessage()));
-                throw new IllegalStateException(String.format("Error in timeline %d, %s", lineCount, e.getMessage()));
+                log.log(Level.SEVERE, String.format("Error in timeLine %d, %s", lineCount, e.getMessage()));
+                throw new IllegalStateException(String.format("Error in timeLine %d, %s", lineCount, e.getMessage()));
             }
             else if (errorType.contains("org.yaml.snakeyaml")) {
                 Pattern pattern = Pattern.compile(regexParser, Pattern.MULTILINE);
@@ -128,15 +129,15 @@ public class ReadTimeLine {
         String value;
         Boolean boolValue;
         TimeLine timeline = new TimeLine();
-        if (item.get("startdate") != null) {
-            value = (String) item.get("startdate");
+        if (item.get("startDate") != null) {
+            value = (String) item.get("startDate");
             timeline.setStartDate(value);
         }
         if (timeline.getStartDate() == null) {
-            throw new IllegalStateException("startdate is not filled");
+            throw new IllegalStateException("startDate is not filled");
         }
-        if (item.get("countrycode") != null) {
-            value = (String) item.get("countrycode");
+        if (item.get("countryCode") != null) {
+            value = (String) item.get("countryCode");
             timeline.setCountryCode(value);
         }
         if (item.get("province") != null) {
@@ -147,12 +148,6 @@ public class ReadTimeLine {
             value = (String) item.get("city");
             timeline.setCity(value);
         }
-        // keep for backwards compatibility
-        if (item.get("creator") != null) {
-            value = (String) item.get("creator");
-            timeline.setAuthor(value);
-        }
-        // correct value in timeline.yml
         if (item.get("author") != null) {
             value = (String) item.get("author");
             timeline.setAuthor(value);
@@ -161,8 +156,8 @@ public class ReadTimeLine {
             value = (String) item.get("website");
             timeline.setWebsite(value);
         }
-        if (item.get("copyright") != null) {
-            value = (String) item.get("copyright");
+        if (item.get("copyRight") != null) {
+            value = (String) item.get("copyRight");
             timeline.setCopyRight(value);
         }
         if (item.get("title") != null) {
@@ -201,33 +196,33 @@ public class ReadTimeLine {
     }
 
     private void addTimeline(TimeLine timeline) {
-        for (TimeLine element : this.timeLines) {
+        for (TimeLine element : this.timeLines.getTimeLines()) {
             if (timeline.getStartDate().equals(element.getStartDate())) {
-                throw new IllegalStateException(String.format("startdate: %tF %tT already exists", timeline.getStartDate(), timeline.getStartDate()));
+                throw new IllegalStateException(String.format("startDate: %tF %tT already exists", timeline.getStartDate(), timeline.getStartDate()));
             }
         }
-        this.timeLines.add(timeline);
+        this.timeLines.addTimeLine(timeline);
     }
 
     private void setEndDate() {
         LocalDateTime date = null;
-        for (int count = this.timeLines.size() - 1; count >= 0; count--) {
-            if (count < this.timeLines.size() - 1) {
-                this.timeLines.get(count).setEndDate(date);
+        for (int count = this.timeLines.getTimeLines().size() - 1; count >= 0; count--) {
+            if (count < this.timeLines.getTimeLines().size() - 1) {
+                this.timeLines.getTimeLines().get(count).setEndDate(date);
             }
-            date = this.timeLines.get(count).getStartDate();
+            date = this.timeLines.getTimeLines().get(count).getStartDate();
         }
     }
 
-    public List<TimeLine> getTimeLines() {
-        this.timeLines.sort(new SortByDate());
+    public List<TimeLine> getTimeLinesSorted() {
+        this.timeLines.getTimeLines().sort(new SortByDate());
         setEndDate();
-        return this.timeLines;
+        return this.timeLines.getTimeLines();
     }
 
     public TimeLine getTimeLine(LocalDateTime date) {
         TimeLine result = null;
-        for (TimeLine timeline : this.getTimeLines()) {
+        for (TimeLine timeline : this.getTimeLinesSorted()) {
             if ((!date.isBefore(timeline.getStartDate())) &&
                     ((timeline.getEndDate() == null) ||
                             (date.isBefore(timeline.getEndDate())))){

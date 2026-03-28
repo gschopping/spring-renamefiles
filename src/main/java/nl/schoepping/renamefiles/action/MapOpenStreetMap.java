@@ -12,13 +12,13 @@ public class MapOpenStreetMap {
 
     public MapOpenStreetMap(ReadConfig config, OSMLocation location) {
         this.location = location;
-        this.address.setTitle(getMap(config.getConfig().getOpenStreetMap().getTitle()));
-        this.address.setDescription(getMap(config.getConfig().getOpenStreetMap().getDescription()));
-        this.address.setLocation(getMap(config.getConfig().getOpenStreetMap().getLocation()));
-        this.address.setCity(getMap(config.getConfig().getOpenStreetMap().getCity()));
-        this.address.setProvince(getMap(config.getConfig().getOpenStreetMap().getProvince()));
-        this.address.setCountry(getMap(config.getConfig().getOpenStreetMap().getCountry()));
-        this.address.setCountryCode(getMap(config.getConfig().getOpenStreetMap().getCountryCode()));
+        this.address.setTitle(getMap(config.getConfig().getOpenStreetMap().getTitleList()));
+        this.address.setDescription(getMap(config.getConfig().getOpenStreetMap().getDescriptionList()));
+        this.address.setLocation(getMap(config.getConfig().getOpenStreetMap().getLocationList()));
+        this.address.setCity(getMap(config.getConfig().getOpenStreetMap().getCityList()));
+        this.address.setProvince(getMap(config.getConfig().getOpenStreetMap().getProvinceList()));
+        this.address.setCountry(getMap(config.getConfig().getOpenStreetMap().getCountryList()));
+        this.address.setCountryCode(getMap(config.getConfig().getOpenStreetMap().getCountryCodeList()));
     }
 
     private String getMap(String[] keys) {

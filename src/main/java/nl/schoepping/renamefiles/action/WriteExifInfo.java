@@ -105,92 +105,92 @@ public class WriteExifInfo {
 
     private void setAuthor(String author) {
         if (author != null) {
-            setTag(this.config.getAuthor(), author);
+            setTag(this.config.getAuthorList(), author);
         }
     }
 
     private void setCopyright(String copyRight) {
         if (copyRight != null) {
-            setTag(this.config.getCopyRight(), copyRight);
+            setTag(this.config.getCopyRightList(), copyRight);
         }
     }
 
     private void setComment(String comment) {
         if (comment != null) {
-            setTag(this.config.getComment(), comment);
+            setTag(this.config.getCommentList(), comment);
         }
     }
 
     private void setCountryCode2(String countryCode) {
         if (countryCode != null) {
-            setTag(this.config.getCountryCode2(), countryCode.toUpperCase());
+            setTag(this.config.getCountryCode2List(), countryCode.toUpperCase());
         }
     }
 
     private void setCountryCode3(String countryCode) {
         if (countryCode != null) {
             Locale locale = new Locale.Builder().setRegion(countryCode).build();
-            setTag(this.config.getCountryCode3(), locale.getISO3Country());
+            setTag(this.config.getCountryCode3List(), locale.getISO3Country());
         }
     }
 
     private void setCountry(String country) {
         if (country != null) {
-            setTag(this.config.getCountry(), country);
+            setTag(this.config.getCountryList(), country);
         }
     }
 
     private void setProvince(String province) {
         if (province != null) {
-            setTag(this.config.getProvince(), province);
+            setTag(this.config.getProvinceList(), province);
         }
     }
 
     private void setCity(String city) {
         if (city != null) {
-            setTag(this.config.getCity(), city);
+            setTag(this.config.getCityList(), city);
         }
     }
 
     private void setLocation(String location) {
         if (location != null) {
-            setTag(this.config.getLocation(), location);
+            setTag(this.config.getLocationList(), location);
         }
     }
 
     private void setTitle(String title) {
         if (title != null) {
-            setTag(this.config.getTitle(), title);
+            setTag(this.config.getTitleList(), title);
         }
     }
 
     private void setUrl(String url) {
         if (url != null) {
-            setTag(this.config.getUrl(), url);
+            setTag(this.config.getUrlList(), url);
         }
     }
 
     private void setDescription(String description) {
         if (description != null) {
-            setTag(this.config.getDescription(), description);
+            setTag(this.config.getDescriptionList(), description);
         }
     }
 
     private void setKeys1(String[] keys) {
         if (keys.length > 0) {
-            setKeys(this.config.getKeys1(), keys);
+            setKeys(this.config.getKeys1List(), keys);
         }
     }
 
     private void setKeys2(String[] keys) {
         if (keys.length > 0) {
-            setTag(config.getKeys2(), String.join(",", keys));
+            setTag(config.getKeys2List(), String.join(",", keys));
         }
     }
 
     private void setInstructions(String instructions) {
         if (instructions != null) {
-            setTag(this.config.getInstructions(), instructions);
+            setTag(this.config.getInstructionList(), instructions);
         }
     }
 

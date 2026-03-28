@@ -49,7 +49,7 @@ public class ConfigController {
     @GetMapping(path = "/config/exif")
     public ResponseEntity<ConfigExif> configExif() {
         try {
-            ReadConfig config = new ReadConfig("config.yml");
+            ReadConfig config = new ReadConfig("config_extrafields.yml");
             return new ResponseEntity<>(config.getConfig().getExif(), HttpStatus.OK);
         }
         catch (Exception e) {

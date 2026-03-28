@@ -7,7 +7,7 @@ Feature: read timeline yaml file
   Scenario: 4th item
     Given timeline file "timeline.yml"
     When get element 4
-    Then copyright should be "Guido Schöpping (2025)"
+    Then copyright should be "Guido Schöpping (2026)"
     And country should be "Tsjechië"
     And description should be "Hradčany"
     And startdate should be "2015-03-21 05:00:00"
@@ -32,7 +32,7 @@ Feature: read timeline yaml file
 
   Scenario: faulty yaml file
     Given timeline file "not_a_yaml.yml"
-    Then an error "Error on line 11, column 5: -startdate: \"2019-04-13 10:00:00\"" should be shown
+    Then an error "Error on line 11, column 5: -startDate: \"2019-04-13 10:00:00\"" should be shown
 
   Scenario: space missing
     Given timeline file "not_a_yaml2.yml"
@@ -44,15 +44,15 @@ Feature: read timeline yaml file
 
   Scenario: incorrect date format
     Given timeline file "incorrect_date.yml"
-    Then an error "Error in timeline 1, startdate: 2019-04 10:00:00 is not valid" should be shown
+    Then an error "Error in timeline 1, startDate: 2019-04 10:00:00 is not valid" should be shown
 
   Scenario: 2 timelines with same startdate
     Given timeline file "same_date.yml"
-    Then an error "Error in timeline 2, startdate: 2019-04-05 10:00:00 already exists" should be shown
+    Then an error "Error in timeline 2, startDate: 2019-04-05 10:00:00 already exists" should be shown
 
   Scenario: incorrect countrycode is used
     Given timeline file "invalid_countrycode.yml"
-    Then an error "Error in timeline 3, countrycode: BX is not valid" should be shown
+    Then an error "Error in timeline 3, countryCode: BX is not valid" should be shown
 
   Scenario: invalid variable is used
     Given timeline file "invalid_variable.yml"
@@ -60,7 +60,7 @@ Feature: read timeline yaml file
 
   Scenario: startdate not filled
     Given timeline file "null_date.yml"
-    Then an error "Error in timeline 1, startdate is not filled" should be shown
+    Then an error "Error in timeline 1, startDate is not filled" should be shown
 
   Scenario: enabled is set to false
     Given timeline file "disabled.yml"

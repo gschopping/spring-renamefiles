@@ -1,5 +1,6 @@
 package nl.schoepping.spring_renamefiles;
 
+import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -90,7 +91,7 @@ public class stepDefinitionsConfig {
     @When("get the author exif tags")
     public void getTheAuthorExifTags() {
         // Write code here that turns the phrase above into concrete actions
-        tags = config.getConfig().getExif().getAuthor();
+        tags = config.getConfig().getExif().getAuthorList();
     }
 
     @Then("tags should contain {string}")
@@ -102,31 +103,31 @@ public class stepDefinitionsConfig {
     @When("get the location exif tags\"")
     public void getTheLocationExifTags() {
         // Write code here that turns the phrase above into concrete actions    throw new io.cucumber.java.PendingException();}
-        tags = config.getConfig().getExif().getLocation();
+        tags = config.getConfig().getExif().getLocationList();
     }
 
     @When("get the title exif tags")
     public void getTheTitleExifTags() {
         // Write code here that turns the phrase above into concrete actions
-        tags = config.getConfig().getExif().getTitle();
+        tags = config.getConfig().getExif().getTitleList();
     }
 
     @When("get the description exif tags")
     public void getTheDescriptionExifTags() {
         // Write code here that turns the phrase above into concrete actions
-        tags = config.getConfig().getExif().getDescription();
+        tags = config.getConfig().getExif().getDescriptionList();
     }
 
     @When("get the title osm tags")
     public void getTheTitleOsmTags() {
         // Write code here that turns the phrase above into concrete actions
-        tags = config.getConfig().getOpenStreetMap().getTitle();
+        tags = config.getConfig().getOpenStreetMap().getTitleList();
     }
 
     @When("get the description osm tags")
     public void getTheDescriptionOsmTags() {
         // Write code here that turns the phrase above into concrete actions
-        tags = config.getConfig().getOpenStreetMap().getDescription();
+        tags = config.getConfig().getOpenStreetMap().getDescriptionList();
     }
 
     @And("regexMedia should be {string}")
@@ -164,4 +165,9 @@ public class stepDefinitionsConfig {
         Assert.assertEquals(message, errorMessage);
     }
 
+    @Then("config should be empty")
+    public void configShouldBeEmpty() {
+        // Write code here that turns the phrase above into concrete actions
+        Assert.assertNull(this.config.getConfig().getExif());
+    }
 }

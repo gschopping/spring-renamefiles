@@ -2,36 +2,58 @@ package nl.schoepping.renamefiles.domain;
 
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
-import java.util.Objects;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class TimeLine {
-    @Setter(AccessLevel.NONE)
+    @Getter
     private LocalDateTime startDate;
+    @Getter
+    @Setter
     private LocalDateTime endDate;
+    @Getter
+    @Setter
     private String title;
+    @Getter
+    @Setter
     private String description;
-    @Setter(AccessLevel.NONE)
+    @Getter
     private String countryCode;
-    @Setter(AccessLevel.NONE)
+    @Getter
     private String country;
+    @Getter
+    @Setter
     private String province;
+    @Getter
+    @Setter
     private String city;
+    @Getter
+    @Setter
     private String location;
+    @Getter
+    @Setter
     private String author;
+    @Getter
+    @Setter
     private String website;
+    @Getter
+    @Setter
     private String copyRight;
+    @Getter
+    @Setter
     private String comment;
+    @Getter
+    @Setter
     private String keys;
+    @Getter
+    @Setter
     private String instructions;
+    @Getter
+    @Setter
     private Boolean overrideTitle;
+    @Getter
+    @Setter
     private Boolean overrideLocation;
 
     public void setCountryCode(String countryCode) {
@@ -42,7 +64,7 @@ public class TimeLine {
             this.country = locale.getDisplayCountry();
         }
         catch (Exception e) {
-            throw new IllegalStateException(String.format("countrycode: %s is not valid", countryCode));
+            throw new IllegalStateException(String.format("countryCode: %s is not valid", countryCode));
         }
     }
 
@@ -56,13 +78,19 @@ public class TimeLine {
             this.startDate = LocalDateTime.parse(startDate, formatter);
         }
         catch (Exception e) {
-            throw new IllegalStateException( String.format("startdate: %s is not valid", startDate));
+            throw new IllegalStateException( String.format("startDate: %s is not valid", startDate));
         }
     }
 
     @Override
     public String toString() {
-        return startDate.toString();
+        if (startDate != null) {
+            return startDate.toString();
+        }
+        else {
+            return null;
+        }
+
     }
 
 
