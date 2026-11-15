@@ -9,8 +9,8 @@ import lombok.*;
 public class ConfigOpenStreetMap {
     private String title = "town city village municipality";
     private String description = "display_name";
-    private String location = "suburb neighbourhood city_district quarter district road footway";
-    private String city = "town city village municipality";
+    private String location = "suburb neighbourhood city_district quarter district road footway village";
+    private String city = "town city municipality";
     private String province = "state county";
     private String country = "country";
     private String countryCode = "country_code";

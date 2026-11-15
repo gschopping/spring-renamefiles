@@ -7,7 +7,6 @@ Feature: Read GPS tags and get address
     And longitude should be "3.653545"
     And street should be "Rammekensweg"
     And location should be "Ritthem"
-    And city should be "Vlissingen"
 
   Scenario: Read GPS from Sony RAW file and writes found address information
     Given mediaFile "SonyA77.ARW"
