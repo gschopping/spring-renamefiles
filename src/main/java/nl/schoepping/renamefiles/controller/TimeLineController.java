@@ -22,6 +22,7 @@ public class TimeLineController {
     @GetMapping(path = "/timeline")
     public ResponseEntity<List<TimeLine>> getTimeLines() {
         try {
+            log.log(Level.INFO, "Read timeline");
             ReadTimeLine reader = new ReadTimeLine("timeline.yml");
             return new ResponseEntity<>(reader.getTimeLinesSorted(), HttpStatus.OK);
         }
@@ -34,6 +35,7 @@ public class TimeLineController {
     @GetMapping(path = "/timeline/{datetime}")
     public ResponseEntity<TimeLine> getTimeLine(@PathVariable("datetime") String datetime) {
         try {
+            log.log(Level.INFO, "Read timeline for datetime: " + datetime);
             DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
             ReadTimeLine reader = new ReadTimeLine("timeline.yml");
             LocalDateTime date = LocalDateTime.parse(datetime, formatter);

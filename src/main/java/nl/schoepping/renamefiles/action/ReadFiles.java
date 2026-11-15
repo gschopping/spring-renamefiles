@@ -35,7 +35,7 @@ public class ReadFiles {
     }
 
     public ReadFile getFile(File file, ReadConfig config, ReadTimeLine timeLines, ReadAddress address, int counter) {
-        log.info("Reading file " + file.getName());
+        log.info("Read file " + file.getName());
         ReadExifInfo exifInfo = new ReadExifInfo(file.getPath(), config);
         TimeLine timeLine = timeLines.getTimeLine(exifInfo.getExifInfo().getCreationDate());
         String newFileName = "";

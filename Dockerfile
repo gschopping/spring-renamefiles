@@ -1,7 +1,7 @@
 FROM eclipse-temurin:25-jre-alpine
 WORKDIR /app
 
-ENV PATH="/opt/exiftool:$PATH"
+ENV PATH="/opt/exiftool:/opt/dnglab:$PATH"
 
 
 RUN set -eux \
@@ -22,7 +22,14 @@ RUN set -eux \
   && echo "${CHECKSUM}  ${EXIFTOOL_ARCHIVE}" | /usr/bin/sha1sum -c - \
   && tar xzf $EXIFTOOL_ARCHIVE --strip-components=1 \
   && rm -f $EXIFTOOL_ARCHIVE \
-  && exiftool -ver
+  && exiftool -ver \
+  # install dnglab \
+  && mkdir -p /opt/dnglab \
+  && cd /opt/dnglab \
+  && DNGLAB_VERSION='v.0.8.0' \
+  && curl -s -O https://github.com/dnglab/dnglab/releases/download/${DNGLAB_VERSION}/dnglab_linux_x64 \
+  && mv dnglab_linux_x64 dnglab \
+  && chmod a+x dnglab \
 
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} /app/api.jar

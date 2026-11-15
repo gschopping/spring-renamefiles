@@ -8,7 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +24,7 @@ public class FileController {
     @GetMapping(path = "/files/root")
     public ResponseEntity<List<ReadFile>> getFiles() {
         try {
+            log.log(Level.INFO, "Read root directory");
             ReadConfig config = new ReadConfig("config.yml");
             ReadFiles readFiles = new ReadFiles("../files", config, new ReadTimeLine("timeline.yml"), config.getRegexMedia(ReadConfig.FileFormat.ALL), ReadFiles.Divider.TIME);
             readFiles.setFiles();
@@ -37,12 +41,14 @@ public class FileController {
         try {
             ReadConfig config = new ReadConfig("config.yml");
             if (subfolder.matches(config.getConfig().getPath().getPathForGps())) {
+                log.log(Level.INFO, "Read GPS directory:  " + subfolder);
                 // GPS files, has the same geolocation
                 ReadFiles readFiles = new ReadFiles("../files/" + subfolder, config, new ReadTimeLine("timeline.yml"), config.getRegexMedia(ReadConfig.FileFormat.ALL), ReadFiles.Divider.TIME);
                 readFiles.setFiles();
                 readFiles.updateFiles();
                 return new ResponseEntity<>(readFiles.getFiles(), HttpStatus.OK);
             } else if (subfolder.matches(config.getConfig().getPath().getPathForTimeLaps())) {
+                log.log(Level.INFO, "Read TimeLaps directory:  " + subfolder);
                 // Timelapse folder only contain photos, and should be numbered.
                 ReadFiles readFiles = new ReadFiles("../files/" + subfolder, config, new ReadTimeLine("timeline.yml"), config.getRegexMedia(ReadConfig.FileFormat.PHOTO), ReadFiles.Divider.COUNTER);
                 return new ResponseEntity<>(readFiles.getFiles(), HttpStatus.OK);
@@ -56,11 +62,12 @@ public class FileController {
     }
 
     @GetMapping(path = "/file/{filename}")
-    public ResponseEntity<WriteExifInfo> getFile(@PathVariable String filename) {
+    public ResponseEntity<WriteExifInfo> getFile(@PathVariable String fileName) {
         try {
+            log.log(Level.INFO, "Read file:  " + fileName);
             ReadConfig config = new ReadConfig("config.yml");
             ReadFiles readFiles = new ReadFiles("../files", config, new ReadTimeLine("timeline.yml"), config.getRegexMedia(ReadConfig.FileFormat.ALL), ReadFiles.Divider.TIME);
-            File file = new File("../files/" + filename);
+            File file = new File("../files/" + fileName);
             ReadFile readFile = readFiles.getFile(file, config, new ReadTimeLine("timeline.yml"), new ReadAddress(), 1);
             if (readFile != null) {
                 return new ResponseEntity<>(new WriteExifInfo(readFile, config.getConfig().getExif(), true), HttpStatus.OK);
@@ -94,7 +101,7 @@ public class FileController {
 
             if (readTimeLine.getTimeLines().isEnabled()) {
                 if (renameFiles.isRoot()) {
-                    log.log(Level.INFO, "Read root directory");
+                    log.log(Level.INFO, "Read root directory and rename files");
                     // root folder
                     readFiles = new ReadFiles("../files", config, readTimeLine, config.getRegexMedia(ReadConfig.FileFormat.ALL), ReadFiles.Divider.TIME);
                     readFiles.setFiles();
@@ -110,7 +117,7 @@ public class FileController {
                     for (File subdirectory : dirs) {
                         // GPS folders
                         if (subdirectory.isDirectory() && renameFiles.isGPS(subdirectory.getName())) {
-                            log.log(Level.INFO, "Read GPS directory: " + subdirectory.getName());
+                            log.log(Level.INFO, "Read GPS directory: " + subdirectory.getName() + " and rename files");
                             readFiles = new ReadFiles("../files/" + subdirectory.getName(), config, readTimeLine, config.getRegexMedia(ReadConfig.FileFormat.ALL), ReadFiles.Divider.TIME);
                             readFiles.setFiles();
                             readFiles.updateFiles();
@@ -124,7 +131,7 @@ public class FileController {
 
                         // TimeLaps folders
                         if (subdirectory.isDirectory() && renameFiles.isTimeLaps(subdirectory.getName())) {
-                            log.log(Level.INFO, "Read TimeLaps directory: " + subdirectory.getName());
+                            log.log(Level.INFO, "Read TimeLaps directory: " + subdirectory.getName() + "and rename files");
                             readFiles = new ReadFiles("../files/" + subdirectory.getName(), config, readTimeLine, config.getRegexMedia(ReadConfig.FileFormat.PHOTO), ReadFiles.Divider.COUNTER);
                             readFiles.setFiles();
                             files = readFiles.getFiles();
@@ -133,6 +140,18 @@ public class FileController {
                                 WriteExifInfo writeExifInfo = new WriteExifInfo(file, config.getConfig().getExif(), removeOriginal);
                                 writeExifInfo.writeExifInfoToFile();
                             }
+                            // convert to dng
+                            log.log(Level.INFO, "Convert to DNG for directory: " + subdirectory.getName());
+                            String[] cmdString = new String[] { "dnglab", "convert", "-c", "lossles", "--embed-raw", "false", "../files/" + subdirectory.getName() + "/" + config.getConfig().getPath().getPathForResults(), "../files/" + subdirectory.getName() + "/" + config.getConfig().getPath().getPathForDng() };
+                            log.config("Executing " + String.join(" ", cmdString));
+                            Process process = Runtime.getRuntime().exec(cmdString);
+                            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                            String result = reader.readLine();
+                            while (result != null) {
+                                log.log(Level.INFO,result);
+                                result = reader.readLine();
+                            }
+                            reader.close();
                         }
                     }
                 }

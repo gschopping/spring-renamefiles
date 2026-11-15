@@ -69,7 +69,13 @@ public class WriteExifInfo {
                 try {
                     writeFile(newFileName, false);
                     noError = true;
-                    log.info("Rename file " + readFile.getFileName() + " to " + newFileName);
+                    if (this.removeOriginal) {
+                        log.info("Move file " + readFile.getFileName() + " to " + newFileName);
+                    }
+                    else {
+                        log.info("Copy file " + readFile.getFileName() + " to " + newFileName);
+                    }
+
                 } catch (Exception e) {
                     if (e.getMessage().matches("^(.* already exists)$")) {
                         if (postfix == ' ') {

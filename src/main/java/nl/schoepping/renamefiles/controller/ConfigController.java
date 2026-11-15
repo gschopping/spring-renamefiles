@@ -19,6 +19,7 @@ public class ConfigController {
     @GetMapping(path = "/config/{fileType}")
     public ResponseEntity<FileType> config(@PathVariable("fileType") String fileType) {
         try {
+            log.log(Level.INFO, "Read config fileType for: "  + fileType);
             ReadConfig config = new ReadConfig("config.yml");
             FileType type = config.getFileType(fileType);
             if (type != null) {
@@ -37,6 +38,7 @@ public class ConfigController {
     @GetMapping(path = "/config/path")
     public ResponseEntity<ConfigPath>  configPath() {
         try {
+            log.log(Level.INFO, "Read config path");
             ReadConfig config = new ReadConfig("config.yml");
             return new ResponseEntity<>(config.getConfig().getPath(), HttpStatus.OK);
         }
@@ -49,7 +51,8 @@ public class ConfigController {
     @GetMapping(path = "/config/exif")
     public ResponseEntity<ConfigExif> configExif() {
         try {
-            ReadConfig config = new ReadConfig("config_extrafields.yml");
+            log.log(Level.INFO, "Read config exif");
+            ReadConfig config = new ReadConfig("config.yml");
             return new ResponseEntity<>(config.getConfig().getExif(), HttpStatus.OK);
         }
         catch (Exception e) {
@@ -61,6 +64,7 @@ public class ConfigController {
     @GetMapping(path = "/config/osm")
     public ResponseEntity<ConfigOpenStreetMap> configOSM() {
         try {
+            log.log(Level.INFO, "Read config openStreetMaps");
             ReadConfig config = new ReadConfig("config.yml");
             return new ResponseEntity<>(config.getConfig().getOpenStreetMap(), HttpStatus.OK);
         }

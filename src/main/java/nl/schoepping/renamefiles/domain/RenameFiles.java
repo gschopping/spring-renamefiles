@@ -20,28 +20,28 @@ public class RenameFiles {
     }
 
     public Action getActionAction() {
-        if (action.equals("MOVE")) {
+        if (action.equalsIgnoreCase("MOVE")) {
             return Action.MOVE;
         }
         return Action.COPY;
     }
 
     public boolean isRoot() {
-        if (path.equals("root")) {
+        if (path.equalsIgnoreCase("root")) {
             return true;
         }
-        else return path.equals("all");
+        else return path.equalsIgnoreCase("all");
     }
 
     public boolean isGPS(String subdirectory) {
-        if (path.equals("all") && subdirectory.matches(config.getPathForGps())) {
+        if (path.equalsIgnoreCase("all") && subdirectory.matches(config.getPathForGps())) {
             return true;
         }
         else return path.matches(config.getPathForGps()) && subdirectory.matches(config.getPathForGps()) && path.equals(subdirectory);
     }
 
     public boolean isTimeLaps(String subdirectory) {
-        if (path.equals("all") && subdirectory.matches(config.getPathForTimeLaps())) {
+        if (path.equalsIgnoreCase("all") && subdirectory.matches(config.getPathForTimeLaps())) {
             return true;
         }
         else return path.matches(config.getPathForTimeLaps()) && subdirectory.matches(config.getPathForTimeLaps()) && path.equals(subdirectory);
